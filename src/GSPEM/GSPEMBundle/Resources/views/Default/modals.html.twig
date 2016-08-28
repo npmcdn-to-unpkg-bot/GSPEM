@@ -1,0 +1,260 @@
+{# app/Resources/views/base.html.twig #}
+{% verbatim %}
+<script type="text/ng-template" id="tareas_form.html">
+    <div class="modal-header">
+        <h3>Tarea</h3>
+    </div>
+    <div class="modal-body">
+        <fieldset>
+
+
+
+            <div class="form-group has-success has-feedback">
+                <input
+                        ng-model="name"
+                        class="form-control"
+                        placeholder="Nombre(*)">
+            </div>
+
+
+            <div class="form-group has-success has-feedback">
+                <input
+                        ng-model="descript"
+                        class="form-control"
+                        placeholder="Descripción(*)">
+            </div>
+
+
+            <div class="form-group has-success has-feedback">
+                <label>Tecnico :</label>
+
+                <select  class="form-control" name="typematerial" id="mySelect"
+                 ng-options="tecnico.name for tecnico in tecnicos track by tecnico.id"
+
+                 ng-model="tecnicotarea"></select>
+
+            </div>
+
+            <div class="form-group has-success has-feedback">
+                <label>Sitio :</label>
+                <select  class="form-control" name="typematerial" id="mySelect"
+                 ng-options="sitio.name for sitio in sitios track by sitio.id"
+
+                 ng-model="sitiotarea"></select>
+            </div>
+
+
+        </fieldset>
+
+
+    </div>
+    <div class="modal-footer">
+        <a class="btn btn-success" ng-click="save()">Guardar</a>
+    </div>
+</script>
+<script type="text/ng-template" id="material_form.html">
+    <div class="modal-header">
+        <h3>Material</h3>
+    </div>
+    <div class="modal-body">
+        <fieldset>
+
+            <div class="form-group has-success has-feedback">
+                <input
+                        ng-model="id_custom"
+                        class="form-control"
+                        placeholder="ID">
+            </div>
+
+            <div class="form-group has-success has-feedback">
+                <input
+                        ng-model="name"
+                        class="form-control"
+                        placeholder="Nombre(*)">
+            </div>
+
+            <div class="form-group has-success has-feedback">
+                <input
+                        ng-model="descript"
+                        class="form-control"
+                        placeholder="Descripción(*)">
+            </div>
+
+            <div class="form-group has-success has-feedback">
+                <label>Tipo :</label>
+
+                <select  class="form-control" name="typematerial" id="mySelect"
+                 ng-options="type.name for type in types track by type.id"
+
+                 ng-model="typematerial"></select>
+
+            </div>
+
+
+        </fieldset>
+
+
+    </div>
+    <div class="modal-footer">
+        <a class="btn btn-success" ng-click="saveMaterial()">Guardar</a>
+    </div>
+</script>
+
+<script type="text/ng-template" id="material_type_form.html">
+    <div class="modal-header">
+        <h3>Tipo de Material</h3>
+    </div>
+    <div class="modal-body">
+        <fieldset>
+
+            <div class="form-group has-success has-feedback">
+                <input
+                        ng-model="name"
+                        class="form-control"
+                        placeholder="Nombre">
+            </div>
+            <div class="form-group has-success has-feedback">
+                <input
+                        ng-model="descript"
+                        class="form-control"
+                        placeholder="Descripción">
+            </div>
+
+        </fieldset>
+    </div>
+    <div class="modal-footer">
+        <a class="btn btn-success" ng-click="saveType()">Guardar</a>
+    </div>
+</script>
+
+<script type="text/ng-template" id="rechazo_stock.html">
+    <div class="modal-header">
+        <h3>Nota por rechazo de materiales</h3>
+    </div>
+    <div class="modal-body">
+        <fieldset>
+
+            <textarea class="form-control" ng-model="descript" rows="3"></textarea>
+
+        </fieldset>
+    </div>
+    <div class="modal-footer">
+        <a class="btn btn-success" ng-click="saveDescript()">Guardar</a>
+    </div>
+</script>
+
+<script type="text/ng-template" id="sitio_form.html">
+    <div class="modal-header">
+        <h3>Sitio</h3>
+    </div>
+    <div class="modal-body">
+        <fieldset>
+
+
+            <div class="form-group has-success has-feedback">
+                <input
+                        ng-model="name"
+                        class="form-control"
+                        placeholder="Nombre(*)">
+            </div>
+
+            <div class="form-group has-success has-feedback">
+                <input
+                        ng-model="descript"
+                        class="form-control"
+                        placeholder="Descripción">
+            </div>
+
+            <div class="form-group has-success has-feedback">
+            <a ng-show="id!=0" ng-click="editing=true" class="btn btn-success btn-sm">Editar</a>
+            <label ng-show="!editing" >{{ direccion_str  }}</label>
+            <input ng-show="editing" type="text" ng-model="direccion" placeholder="Ingrese direccion aqui (*)" class="form-control" g-places-autocomplete ng-model="myScopeVar" />
+              <!--  <input type="text"  id="Autocomplete" placeholder="Ingrese direccion aqui " class="form-control" ng-autocomplete="result1" ng-change="placeChanged()" on-place-changed="placeChanged(place)" details="details1" options="options1"/>-->
+            </div>
+
+        </fieldset>
+    </div>
+    <div class="modal-footer">
+        <a class="btn btn-success" ng-click="saveSitio()">Guardar</a>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="newUser.html">
+    <div class="modal-header">
+        <h3>Usuario</h3>
+    </div>
+    <div class="modal-body">
+        <fieldset>
+            <div class="form-group has-success has-feedback">
+     <label>Nombre(*)</label>
+     <input
+             ng-model="nombre"
+             class="form-control"
+             placeholder="Nombre">
+    </div>
+
+    <div class="form-group has-success has-feedback">
+     <label>Apellido</label>
+     <input
+             ng-model="apellido"
+             class="form-control"
+             placeholder="Apellido">
+    </div>
+
+    <div class="form-group has-success has-feedback">
+     <label>eMail(*)</label>
+     <input
+             ng-model="mail"
+             class="form-control"
+             placeholder="eMail">
+    </div>
+
+    <div class="form-group has-success has-feedback">
+     <label>Usuario(*)</label>
+     <input
+             ng-model="user"
+             class="form-control"
+             placeholder="Usuario">
+    </div>
+
+    <div class="form-group has-success has-feedback">
+     <label>Clave(*)</label>
+     <div class="form-inline">
+       <a ng-click="editPass()" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+
+      <input
+             type="password"
+             ng-model="pass"
+             class="form-control"
+             placeholder="Clave" ng-disabled="passedite">
+      </div>
+    </div>
+    <div class="form-group has-success has-feedback">
+     <label>Telefono</label>
+     <input
+             ng-model="phone"
+             class="form-control"
+             placeholder="Telefono">
+    </div>
+
+    <label>Perfil :</label>
+    <div class="row">
+     <div class="btn-group">
+      <a href class="btn btn-default" ng-class="getActive(1,perfil)" ng-click="setActiveUser(1)" ui-exclusion-group='myButtons'>Adminstrador</a>
+      <a href class="btn btn-default" ng-class="getActive(2,perfil)" ng-click="setActiveUser(2)" ui-exclusion-group='myButtons'>Adminstrador Remoto</a>
+      <a href class="btn btn-default" ng-class="getActive(3,perfil)" ng-click="setActiveUser(3)" ui-exclusion-group='myButtons'>Tecnico</a>
+     </div>
+
+    </div>
+
+
+        </fieldset>
+
+
+    </div>
+    <div class="modal-footer">
+        <a class="btn btn-success" ng-click="saveUser()">Guardar</a>
+    </div>
+</script>
+ {% endverbatim %}

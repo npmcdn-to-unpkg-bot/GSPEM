@@ -1,0 +1,53 @@
+<div class="row">
+
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Stock Maestro <small></small></h2>
+                <div class="clearfix">
+                    <div class="form-group">
+                        <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+                        <div class="input-group col-lg-4 pull-right">
+                            <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
+                            <input type="text" ng-model="filtromaterial"class="form-control" id="exampleInputAmount" placeholder="Nombre">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="x_content" style="height:  60% ;overflow: auto" id="exportable">
+
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Stock Actual</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in stock | filter:{name:filtromaterial}">
+                        <th>{{ $index +1 }}</th>
+                        <td>{{ item.idCustom }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.descript }}</td>
+
+                        <td style="text-align: right">{{ item.stock }}</td>
+
+
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="x_content">
+                <a class="btn btn-success pull-right" ng-click="confirmar()">Exportar</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+

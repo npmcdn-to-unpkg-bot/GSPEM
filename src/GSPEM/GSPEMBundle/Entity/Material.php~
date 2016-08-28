@@ -1,0 +1,26 @@
+<?php
+
+namespace GSPEM\GSPEMBundle\Entity;
+
+/**
+ * Material
+ */
+class Material
+{
+    /**
+     * @var int
+     */
+    private $id;
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}
+
