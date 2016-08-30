@@ -16,8 +16,9 @@
                         <th>#</th>
                         <th>Nombre / Apellido</th>
                         <th>Username</th>
-                        <th>Mail</th>
 
+                        <th>Mail</th>
+                        <th>Contratista</th>
                         <th>Perfil</th>
                         <th>Estado</th>
                         <th>Opciones</th>
@@ -31,17 +32,15 @@
                         <td>{{ user.username}}</td>
 
                         <td>{{ user.mail}}</td>
+                        <td>{{ user.contratista }}</td>
+                        <td> {{user.profilename}}</td>
 
-
-                        <td ng-if="user.view==1">Administrador</td>
-                        <td ng-if="user.view==2">Administrador Remoto</td>
-                        <td ng-if="user.view==3">Tecnico</td>
 
                         <td ng-if="user.disabled==false"><i class="fa fa-thumbs-up" style="color: green" aria-hidden="true"></i></td>
                         <td ng-if="user.disabled==true"><i class="fa fa-thumbs-down"  style="color: red" aria-hidden="true"></i></td>
 
                         <td><a  ng-click="new(user,'newUser.html','ModalNewUserCtrl')" class="btn btn-default btn-sm"><i class="fa fa-edit" aria-hidden="true"></i></a>
-                            <a  ng-click="chaneStateUser(user.id,user.disabled)" class="btn btn-default btn-sm">
+                            <a  ng-click="chaneStateUser(user.id , user.disabled)" class="btn btn-default btn-sm">
                                 <i ng-if="user.disabled==false" class="fa fa-thumbs-o-down" style="color: red" aria-hidden="true"></i>
                                 <i ng-if="user.disabled==true" class="fa fa-thumbs-o-up" style="color: green" aria-hidden="true"></i>
                                 <a  ng-click="deleteUser(user.id)" class="btn btn-default btn-sm"><i class="fa fa-remove" aria-hidden="true"></i></a>

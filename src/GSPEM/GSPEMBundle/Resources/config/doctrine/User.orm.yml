@@ -70,6 +70,8 @@ GSPEM\GSPEMBundle\Entity\User:
         token:
             type: string
             length: 100
+        contratista:
+            type: integer
     lifecycleCallbacks:
         preUpdate: [ updatedTimestamps ]
 

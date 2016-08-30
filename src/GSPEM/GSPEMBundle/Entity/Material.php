@@ -196,4 +196,91 @@ class Material
     {
         return $this->date;
     }
+    /**
+     * @var string
+     */
+    private $origen;
+
+    /**
+     * @var string
+     */
+    private $ubicacion;
+
+    /**
+     * @var string
+     */
+    private $referencia;
+
+
+    /**
+     * Set origen
+     *
+     * @param string $origen
+     *
+     * @return Material
+     */
+    public function setOrigen($origen)
+    {
+        $this->origen = $origen;
+
+        return $this;
+    }
+
+    /**
+     * Get origen
+     *
+     * @return string
+     */
+    public function getOrigen()
+    {
+        return $this->origen;
+    }
+
+    /**
+     * Set ubicacion
+     *
+     * @param string $ubicacion
+     *
+     * @return Material
+     */
+    public function setUbicacion($ubicacion)
+    {
+        $this->ubicacion = $ubicacion;
+
+        return $this;
+    }
+
+    /**
+     * Get ubicacion
+     *
+     * @return string
+     */
+    public function getUbicacion()
+    {
+        return $this->ubicacion;
+    }
+
+    /**
+     * Set referencia
+     *
+     * @param string $referencia
+     *
+     * @return Material
+     */
+    public function setReferencia($referencia)
+    {
+        $this->referencia = $referencia;
+
+        return $this;
+    }
+
+    /**
+     * Get referencia
+     *
+     * @return string
+     */
+    public function getReferencia()
+    {
+        return $this->referencia;
+    }
 }

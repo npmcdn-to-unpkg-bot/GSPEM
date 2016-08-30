@@ -11,6 +11,8 @@ use GSPEM\GSPEMBundle\Entity\Sitio;
 use GSPEM\GSPEMBundle\Entity\SitioType;
 use GSPEM\GSPEMBundle\Entity\User;
 use GSPEM\GSPEMBundle\Entity\Tarea;
+use GSPEM\GSPEMBundle\Entity\Perfiles;
+use GSPEM\GSPEMBundle\Entity\Contratista;
 
 
 use Symfony\Component\HttpFoundation\Response;
@@ -27,6 +29,8 @@ class DefaultController extends Controller
     {
         $user=$this->get('security.token_storage')->getToken()->getUser();
         //var_dump($user->getRoles()[0]);
+
+
         if($user->getRoles()[0]!='ROLE_ADMIN'){
             if ($user->getDisabled()){
                 $encoders = array(new XmlEncoder(), new JsonEncoder());
@@ -38,8 +42,16 @@ class DefaultController extends Controller
             }
         }
         if ($user->getRoles()[0]!='ROLE_ADMIN'){
-            return $this->render('GSPEMGSPEMBundle:Default:index.html.twig',array("user"=>"user"));
+
+            $em = $this->getDoctrine()->getEntityManager();
+
+            $repo =$em->getRepository('GSPEM\GSPEMBundle\Entity\Perfiles');
+            $profile=$repo->findOneBy(array("id"=>$user->getView()));
+            return $this->render('GSPEMGSPEMBundle:Default:index.html.twig',array("user"=>"user","access"=>json_decode($profile->getAccess())));
         }else {
+
+
+
             return $this->render('GSPEMGSPEMBundle:Default:index.html.twig',array("user"=>"admin"));
         }
     }
@@ -53,7 +65,7 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
 
         $stmt = $em->getConnection()->createQueryBuilder()
-            ->select("m.id as id ,mt.id as type_id, m.id_custom as idCustom , m.descript as descript ,mt.name  as type , m.name as name")
+            ->select("m.id as id ,m.referencia as referencia ,m.ubicacion as ubicacion , m.origen as origen ,mt.id as type_id, m.id_custom as idCustom , m.descript as descript ,mt.name  as type , m.name as name")
             ->from("materiales", "m")
             ->leftJoin("m", "materiales_type", "mt", "m.type = mt.id")
             ->orderBy('m.name', 'ASC')
@@ -241,8 +253,11 @@ class DefaultController extends Controller
 
         $material->setName($request->get("name"));
         $material->setDescript($request->get("descript"));
+        $material->setOrigen($request->get("origen"));
+        $material->setUbicacion($request->get("ubicacion"));
         $material->setDate(new \DateTime());
         $material->setType($request->get("type"));
+        $material->setReferencia($request->get("referencia"));
         $material->setIdCustom($request->get("id_custom"));
 
         if(!$request->get("id")){
@@ -402,6 +417,9 @@ class DefaultController extends Controller
         $user->setName($request->get("nombre"));
         $user->setLastName($request->get("apellido"));
         $user->setUsername ($request->get("username"));
+        $user->setContratista($request->get("contratista"));
+
+
 
         if($request->get('password')!=""){
             $encoder = $factory->getEncoder($user);
@@ -430,24 +448,19 @@ class DefaultController extends Controller
 
     public function setUserStateAction(\Symfony\Component\HttpFoundation\Request $request){
         $em = $this->getDoctrine()->getEntityManager();
+
+
         $repo =$em->getRepository('GSPEM\GSPEMBundle\Entity\User');
         $user = $repo->findOneBy(array("id"=>$request->get("id")));
-
-
         $user->setDisabled($request->get("state"));
-
-        if(!$request->get("id")){
-            $em->persist($user);
-        }
         $em->flush();
 
-        //falta ver lo de las mesas
 
         $encoders = array(new XmlEncoder(), new JsonEncoder());
         $normalizers = array(new ObjectNormalizer());
 
         $serializer = new Serializer($normalizers, $encoders);
-        return new Response($serializer->serialize(array("process"=>true),"json"),200,array('Content-Type'=>'application/json'));
+        return new Response($serializer->serialize(array("process"=>$user->getDisabled()),"json"),200,array('Content-Type'=>'application/json'));
     }
 
 
@@ -468,13 +481,23 @@ class DefaultController extends Controller
 
     public function  getUsersAction(){
         $em = $this->getDoctrine()->getEntityManager();
-        $repo =$em->getRepository('GSPEM\GSPEMBundle\Entity\User');
+
+        $stmt = $em->getConnection()->createQueryBuilder()
+            ->select("u.id as id,c.id as contratistaid , c.name as contratista ,p.name as profilename  ,p.id as profileid ,u.mail as mail ,u.disabled as disabled ,u.username as username ,u.first_name as name ,u.phone as phone, u.last_name as lastName ")
+            ->from("users", "u")
+            ->leftJoin("u", "perfiles", "p", "u.view_type = p.id")
+            ->leftJoin("u", "contratistas", "c", "u.contratista = c.id")
+            ->orderBy("u.username")
+            ->execute();
+
         $encoders = array(new XmlEncoder(), new JsonEncoder());
         $normalizers = array(new ObjectNormalizer());
 
         $serializer = new Serializer($normalizers, $encoders);
-        return new Response($serializer->serialize($repo->findAll(),"json"),200,array('Content-Type'=>'application/json'));
+        return new Response($serializer->serialize($stmt->fetchAll(),"json"),200,array('Content-Type'=>'application/json'));
     }
+    
+    
 
     public function  getUserProfileAction(){
 
@@ -498,5 +521,88 @@ class DefaultController extends Controller
 
         return new Response($serializer->serialize($repo->findAll(),"json"),200,array('Content-Type'=>'application/json'));
     }
+
+    public function getContratistasAction(){
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $repo =$em->getRepository('GSPEM\GSPEMBundle\Entity\Contratista');
+
+        $encoders = array(new XmlEncoder(), new JsonEncoder());
+        $normalizers = array(new ObjectNormalizer());
+
+        $serializer = new Serializer($normalizers, $encoders);
+
+        return new Response($serializer->serialize($repo->findAll(),"json"),200,array('Content-Type'=>'application/json'));
+    }
+
+
+    public function saveContratisaAction(\Symfony\Component\HttpFoundation\Request $request){
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $data=json_decode($request->getContent(),true);
+
+        if($data["id"]>0){
+            $repo =$em->getRepository('GSPEM\GSPEMBundle\Entity\Contratista');
+            $contratista =$repo->findOneBy(array("id"=>$data["id"]));
+        }else{
+            $contratista = new Contratista();
+        }
+        $contratista->setName($data["name"]);
+        $contratista->setDescript($data["descript"]);
+        $contratista->setSupervisor1((string)json_encode($data["sup1"]));
+        $contratista->setSupervisor2((string)json_encode($data["sup2"]));
+        $contratista->setSupervisor3((string)json_encode($data["sup3"]));
+
+        if(!$data["id"]){
+            $em->persist($contratista);
+        }
+        $em->flush();
+        $encoders = array(new XmlEncoder(), new JsonEncoder());
+        $normalizers = array(new ObjectNormalizer());
+        $serializer = new Serializer($normalizers, $encoders);
+        return new Response($serializer->serialize(array("process"=>true),"json"),200,array('Content-Type'=>'application/json'));
+    }
+    
+    
+    
+    
+    
+    public function getPerfilesAction(){
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $repo =$em->getRepository('GSPEM\GSPEMBundle\Entity\Perfiles');
+
+        $encoders = array(new XmlEncoder(), new JsonEncoder());
+        $normalizers = array(new ObjectNormalizer());
+
+        $serializer = new Serializer($normalizers, $encoders);
+
+        return new Response($serializer->serialize($repo->findAll(),"json"),200,array('Content-Type'=>'application/json'));
+    }
+
+    public function saveProfileAction(\Symfony\Component\HttpFoundation\Request $request){
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $data=json_decode($request->getContent(),true);
+
+        if($data["id"]>0){
+            $repo =$em->getRepository('GSPEM\GSPEMBundle\Entity\Perfiles');
+            $perfil = $repo->findOneBy(array("id"=>$data["id"]));
+        }else{
+            $perfil = new Perfiles();
+        }
+        $perfil->setName($data["name"]);
+        $perfil->setDescript($data["descript"]);
+        $perfil->setAccess((string)json_encode($data["access"]));
+        if(!$data["id"]){
+            $em->persist($perfil);
+        }
+        $em->flush();
+        $encoders = array(new XmlEncoder(), new JsonEncoder());
+        $normalizers = array(new ObjectNormalizer());
+        $serializer = new Serializer($normalizers, $encoders);
+        return new Response($serializer->serialize(array("process"=>true),"json"),200,array('Content-Type'=>'application/json'));
+    }
+
 
 }

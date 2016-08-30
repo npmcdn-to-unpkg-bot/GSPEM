@@ -27,7 +27,11 @@ GSPEMApp.controller('abmMaterial', function($scope,$http,$uibModal,toastr,typesS
         $http.get(Routing.generate('get_materiales')
         ).success(function (materiales) {
             $scope.materiales=materiales;
+            for (var a = 0; a < $scope.materiales.length; a++) {
+                $scope.materiales[a].referencia=angular.fromJson($scope.materiales[a].referencia);
+            }
             console.log($scope.materiales);
+
         });
     };
     getTypes();
@@ -125,11 +129,16 @@ GSPEMApp.controller('ModelNewMaterialCtrl', function($filter,$scope,$http, $uibM
     $scope.item = item;
 
 
+    $scope.referencia={ref1:"",ref2:""};
 
     $scope.types=$rootScope.typesMaterial.data;
     console.log($scope.types);
     $scope.name="";
     $scope.descript="";
+    $scope.ubicacion="";
+    $scope.origen="";
+    $scope.descript="";
+
     $scope.id=0;
     $scope.id_custom="";
 
@@ -142,6 +151,11 @@ GSPEMApp.controller('ModelNewMaterialCtrl', function($filter,$scope,$http, $uibM
         $scope.id=item.id;
         $scope.id_custom=item.idCustom
         $scope.name=item.name;
+        $scope.ubicacion=item.ubicacion;
+        $scope.origen=item.origen;
+        if(item.referencia){
+            $scope.referencia=angular.fromJson(item.referencia);
+        }
         $scope.descript=item.descript;
         $scope.typematerial=$filter('filter')($scope.types,{"id":item.type_id})[0];
         console.log($scope.typematerial);
@@ -150,6 +164,16 @@ GSPEMApp.controller('ModelNewMaterialCtrl', function($filter,$scope,$http, $uibM
         console.log($scope.typematerial);
     }
 
+
+    $scope.setRef=function (group, color) {
+        console.log(group);
+        if(group==1){
+            $scope.referencia.ref1=color;
+        }else {
+            $scope.referencia.ref2=color;
+        }
+        console.log($scope.referencia);
+    } ;
 
     $scope.cerrar=function () {
         $uibModalInstance.dismiss('cancel');
@@ -170,6 +194,9 @@ GSPEMApp.controller('ModelNewMaterialCtrl', function($filter,$scope,$http, $uibM
                     name: $scope.name,
                     descript: $scope.descript,
                     id: $scope.id,
+                    referencia:angular.toJson($scope.referencia, 2),
+                    origen:$scope.origen,
+                    ubicacion:$scope.ubicacion,
                     id_custom: $scope.id_custom,
                     type: $scope.typematerial.id,
                 },

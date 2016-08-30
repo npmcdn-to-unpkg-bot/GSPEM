@@ -1,6 +1,6 @@
 <div class="row">
 
-    <div class="col-md-9 col-sm-9 col-xs-12">
+    <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
                 <h2>Stock Maestro <small></small></h2>
@@ -9,7 +9,7 @@
                         <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
                         <div class="input-group col-lg-4 pull-right">
                             <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
-                            <input type="text" ng-model="filtromaterial"class="form-control" id="exampleInputAmount" placeholder="Nombre">
+                            <input type="text" ng-model="filtromaterial"class="form-control" id="exampleInputAmount" placeholder=" ID / Nombre / Stock">
                         </div>
                     </div>
                 </div>
@@ -22,6 +22,7 @@
                     <tr>
                         <th>#</th>
                         <th>ID</th>
+                        <td>Referencia</td>
                         <th>Nombre</th>
                         <th>Stock Actual</th>
                         <th>Stock Entrante / Saliente</th>
@@ -29,9 +30,13 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="item in stock | filter:{name:filtromaterial}">
+                    <tr ng-repeat="item in stock | filter:filtromaterial">
                         <th>{{ $index +1 }}</th>
                         <td>{{ item.idCustom }}</td>
+                        <td>
+                            <button class="btn btn-sm" ng-style="{'background-color':item.referencia.ref1}"></button>
+                            <button class="btn btn-sm" ng-style="{'background-color':item.referencia.ref2}"></button>
+                        </td>
                         <td>{{ item.name }}</td>
                         <td style="text-align: right">{{ item.stock }}</td>
                         <td style="text-align: right">
