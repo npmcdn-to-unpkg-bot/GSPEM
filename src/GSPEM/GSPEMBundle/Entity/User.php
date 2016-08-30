@@ -788,4 +788,33 @@ class User implements AdvancedUserInterface, \Serializable
     {
         return $this->token;
     }
+    /**
+     * @var integer
+     */
+    private $contratista;
+
+
+    /**
+     * Set contratista
+     *
+     * @param integer $contratista
+     *
+     * @return User
+     */
+    public function setContratista($contratista)
+    {
+        $this->contratista = $contratista;
+
+        return $this;
+    }
+
+    /**
+     * Get contratista
+     *
+     * @return integer
+     */
+    public function getContratista()
+    {
+        return $this->contratista;
+    }
 }

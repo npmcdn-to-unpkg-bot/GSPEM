@@ -21,7 +21,7 @@ GSPEMApp.service('MovPend', function($http,toastr) {
     };
 
     setInterval(function(){
-        //getMovPend();
+        getMovPend();
     },5000);
     getMovPend();
 
@@ -38,6 +38,14 @@ GSPEMApp.config(function($routeProvider,toastrConfig) {
             templateUrl : '../bundles/gspemgspem/pages/perfil.html',
             controller  : 'abmPerfil'
         })
+        .when('/contratistas_abm', {
+            templateUrl : '../bundles/gspemgspem/pages/abm_contratistas.html',
+            controller  : 'abmContratistas'
+        })
+        .when('/perfiles_abm', {
+            templateUrl : '../bundles/gspemgspem/pages/abm_perfiles.html',
+            controller  : 'abmPerfiles'
+        })
         .when('/materiales_abm', {
             templateUrl : '../bundles/gspemgspem/pages/abm_materiales.html',
             controller  : 'abmMaterial'
@@ -48,10 +56,6 @@ GSPEMApp.config(function($routeProvider,toastrConfig) {
         })
         .when('/usuarios_abm', {
             templateUrl : '../bundles/gspemgspem/pages/abm_usuarios.html',
-            controller  : 'abmUsuarios'
-        })
-        .when('/perfiles_abm', {
-            templateUrl : '../bundles/gspemgspem/pages/abm_perfiles.html',
             controller  : 'abmUsuarios'
         })
         .when('/materiales_reportes', {

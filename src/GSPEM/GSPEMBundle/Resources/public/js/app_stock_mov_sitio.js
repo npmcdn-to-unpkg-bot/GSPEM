@@ -22,6 +22,9 @@ GSPEMApp.controller('abmStockMovSitio', function($scope,$http,$uibModal,toastr ,
         $http.get(Routing.generate('get_stock_user')
         ).success(function (stock) {
             $scope.stock=stock;
+            for (var a = 0; a < $scope.stock.length; a++) {
+                $scope.stock[a].referencia=angular.fromJson($scope.stock[a].referencia);
+            }
             //console.log($scope.stock);
         });
     };

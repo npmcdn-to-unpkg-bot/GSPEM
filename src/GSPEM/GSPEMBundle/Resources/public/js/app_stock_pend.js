@@ -10,6 +10,12 @@ GSPEMApp.controller('abmStockPend', function($scope,$http,$uibModal,toastr,MovPe
         $http.get(Routing.generate('get_mov_pend_items')
         ).success(function (movs) {
                 $scope.movs=movs;
+
+            for (var i = 0; i < $scope.movs.length; i++) {
+                for (var a = 0; a < $scope.movs[i].items.length; a++) {
+                    $scope.movs[i].items[a].referencia = angular.fromJson($scope.movs[i].items[a].referencia);
+                }
+            }
         });
     };
     getStockPend();

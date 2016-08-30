@@ -28,4 +28,10 @@ GSPEM\GSPEMBundle\Entity\Material:
             date:
                 type: datetime
                 column: date
+            origen:
+                type: string
+            ubicacion:
+                type: string
+            referencia:
+                type: text
     lifecycleCallbacks: {  }

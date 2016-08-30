@@ -2,6 +2,36 @@
  * Created by gabo on 26/07/16.
  */
 GSPEMApp.controller('abmUsuarios', function($scope,$http,$uibModal,toastr,MovPend) {
+
+
+
+    var getContratistas = function() {
+        $http.get(Routing.generate('get_contratistas')
+        ).success(function (contratistas) {
+
+            $scope.contratistas=contratistas;
+            for (var a = 0; a < $scope.contratistas.length; a++) {
+                $scope.contratistas[a].supervisor1=angular.fromJson($scope.contratistas[a].supervisor1);
+                $scope.contratistas[a].supervisor2=angular.fromJson($scope.contratistas[a].supervisor2);
+                $scope.contratistas[a].supervisor3=angular.fromJson($scope.contratistas[a].supervisor3);
+
+            }
+            console.log($scope.contratistas);
+        });
+    };
+    getContratistas();
+
+
+    var gerPerfiles = function() {
+        $http.get(Routing.generate('get_perfiles')
+        ).success(function (perfiles) {
+            $scope.perfiles=perfiles;
+            console.log($scope.perfiles);
+            $scope.profileselected=$scope.perfiles[0];
+        });
+    };
+    gerPerfiles();
+
     var getUsuarios = function() {
         $http.get(Routing.generate('get_users')
         ).success(function (users) {
@@ -9,7 +39,6 @@ GSPEMApp.controller('abmUsuarios', function($scope,$http,$uibModal,toastr,MovPen
             //console.log($scope.users);
         });
     };
-
     getUsuarios();
 
     $scope.deleteUser = function (id) {
@@ -36,7 +65,7 @@ GSPEMApp.controller('abmUsuarios', function($scope,$http,$uibModal,toastr,MovPen
 
     $scope.chaneStateUser=function (id,state) {
         var stateUser=1;
-        if(state){
+        if(state=="1"){
              stateUser=0;
         }
         $http({
@@ -54,6 +83,7 @@ GSPEMApp.controller('abmUsuarios', function($scope,$http,$uibModal,toastr,MovPen
                 return str.join("&");
             }
         }).then(function (response) {
+            console.log(response);
                 getUsuarios();
             },
             function (response) { // optional
@@ -62,11 +92,12 @@ GSPEMApp.controller('abmUsuarios', function($scope,$http,$uibModal,toastr,MovPen
     };
 
 
-
-
-
     $scope.new = function (item,template , controller) {
-
+        if (item==null){
+            item={};
+        }
+        item.perfiles=$scope.perfiles;
+        item.contratistas=$scope.contratistas;
         var modalInstance = $uibModal.open({
             templateUrl: template,
             controller: controller,
@@ -90,9 +121,18 @@ GSPEMApp.controller('abmUsuarios', function($scope,$http,$uibModal,toastr,MovPen
 
 GSPEMApp.controller('ModalNewUserCtrl', function($filter,$scope,$http, $uibModalInstance, item,toastr) {
     $scope.item = item;
+    $scope.perfiles=item.perfiles;
+    $scope.contratistas=item.contratistas;
+    $scope.contratistaenabled=false;
+
+    $scope.contratistaselected=$scope.contratistas[0];
+
+    $scope.profileselected=$scope.perfiles[0];
+
     $scope.type=1;
     $scope.pass="";
     $scope.passedite=true;
+
 
 
     $scope.editPass=function () {
@@ -104,6 +144,19 @@ GSPEMApp.controller('ModalNewUserCtrl', function($filter,$scope,$http, $uibModal
     }
 
     if(item!=null){
+        $scope.profileselected=$filter('filter')($scope.perfiles,{"id":item.profileid})[0];
+        console.log(item.contratistaid);
+        if(item.contratistaid==0){
+            $scope.contratistaenabled=false
+        }else {
+            if(item.contratistaid>0){
+                $scope.contratistaenabled=true;
+                $scope.contratistaselected= $filter('filter')($scope.contratistas,{"id":item.contratistaid})[0];
+            }else {
+                $scope.contratistaenabled=false
+            }
+        }
+
         $scope.id=item.id;
         $scope.nombre=item.name;
         $scope.apellido=item.lastName;
@@ -120,16 +173,8 @@ GSPEMApp.controller('ModalNewUserCtrl', function($filter,$scope,$http, $uibModal
         $scope.perfil=1;
     }
 
-
-    $scope.getActive= function(val1,val2){
-        if(val1==val2)
-            return "btn btn-default active"
-        else
-            return "btn btn-default";
-    }
-
-    $scope.setActiveUser= function(val1){
-        $scope.perfil=val1;
+    $scope.updateCon=function () {
+        console.log($scope.contratistaselected);
     }
 
 
@@ -160,6 +205,15 @@ GSPEMApp.controller('ModalNewUserCtrl', function($filter,$scope,$http, $uibModal
             return false;
         }
 
+        console.log($scope.contratistaselected);
+
+        if($scope.contratistaenabled){
+
+            $scope.contrat= $scope.contratistaselected.id;
+        }else {
+            $scope.contrat=0;
+        }
+
         $http({
             url: Routing.generate('save_users'),
             method: "POST",
@@ -168,11 +222,13 @@ GSPEMApp.controller('ModalNewUserCtrl', function($filter,$scope,$http, $uibModal
                 nombre: $scope.nombre,
                 apellido: $scope.apellido,
                 id:$scope.id,
+
                 username:$scope.user,
                 password:$scope.pass,
                 phone:$scope.phone,
+                contratista: $scope.contrat,
                 mail:$scope.mail,
-                view:$scope.perfil
+                view:$scope.profileselected.id
             },
             transformRequest: function (obj) {
                 var str = [];

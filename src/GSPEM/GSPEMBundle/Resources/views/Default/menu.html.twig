@@ -13,7 +13,7 @@
                     <img src="{{ asset('bundles/gspemgspem/images/servicioa-tcnico.png') }}" alt="..." class="img-circle profile_img" >
                 </div>
                 <div class="profile_info">
-                    <span>Bienvenido,</span>
+                    <span>Bienvenido, </span>
 
                     {% if user== "admin" %}
                         <h2>Admin</h2>
@@ -35,13 +35,18 @@
                     <br/>
                     <ul class="nav side-menu">
 
+                        {% if user== "admin"  %}
+                        <!-- menu admin-->
+                            <li><a><i class="fa fa-users"></i> Usuarios <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
 
-                        <li><a><i class="fa fa-users"></i> Usuarios <span class="fa fa-chevron-down"></span></a>
-                            <ul class="nav child_menu">
-                                <li><a href="#usuarios_abm">ABM Usuarios</a></li>
-                                <!--<li><a href="#perfiles_abm">ABM Perfiles</a></li>-->
-                            </ul>
-                        </li>
+                                    <li><a href="#perfiles_abm">ABM Perfiles</a></li>
+                                    <li><a href="#usuarios_abm">ABM Contratistas</a></li>
+                                    <li><a href="#usuarios_abm">ABM Usuarios</a></li>
+
+                                </ul>
+                            </li>
+
                         <li><a><i class="fa fa-map-marker"></i> Sitios <span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
                                 <li><a href="#sitios_abm">ABM Sitios</a></li>
@@ -85,7 +90,94 @@
                                 <li><a href="#stock_report_sit">Stock por Sitio</a></li>
                             </ul>
                         </li>
+                        {% else %}
 
+                            {% if access.user.all== true %}
+                                <li><a><i class="fa fa-users"></i> Usuarios <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        {% if access.user.abm== true %}
+                                            <li><a href="#perfiles_abm">ABM Perfiles</a></li>
+                                        {% endif %}
+                                        {% if access.user.contratistas== true %}
+                                            <li><a href="#contratistas_abm">ABM Contratistas</a></li>
+                                        {% endif %}
+                                        {% if access.user.perfiles== true %}
+                                            <li><a href="#usuarios_abm">ABM Usuarios</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            {% if access.sitios.all== true %}
+                            <li><a><i class="fa fa-map-marker"></i> Sitios <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    {% if access.sitios.abm== true %}
+                                        <li><a href="#sitios_abm">ABM Sitios</a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                            {% endif %}
+                            {% if access.materiales.all== true %}
+                            <li><a><i class="fa fa-home"></i> Materiales <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    {% if access.materiales.abm_tipo== true %}
+                                        <li><a href="#materiales_typo_abm">ABM Tipo Materiales</a></li>
+                                    {% endif %}
+                                    {% if access.materiales.abm== true %}
+                                        <li><a href="#materiales_abm">ABM Materiales</a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                            {% endif %}
+
+                            {% if access.oper.all== true %}
+                            <li><a><i class="fa fa-pencil"></i> Operaciones <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    {% if access.oper.stock== true %}
+                                        <li><a href="#stock_maestro">Stock Maestro</a></li>
+                                    {% endif %}
+                                    {% if access.oper.stock_to_tec== true %}
+                                        <li><a href="#stock_to_tec">Stock Maestro => Tecnico</a></li>
+                                    {% endif %}
+                                    {% if access.oper.stock_tec_to_tec== true %}
+                                        <li><a href="#stock_tec_to_tec">Stock Tecnico => Tecnico</a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                            {% endif %}
+                            {% if access.opertec.all== true %}
+                            <li><a><i class="fa fa-car"></i> Operaciones  <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    {% if access.opertec.stock== true %}
+                                        <li><a href="#stock_tecnico">Mi Stock</a></li>
+                                    {% endif %}
+                                    {% if access.opertec.stoc_pend== true %}
+                                        <li><a href="#stock_pend">Stock Pendiente</a></li>
+                                    {% endif %}
+                                    {% if access.opertec.stoc_tec== true %}
+                                        <li><a href="#mi_stock_to_tec">Stock => Tecnico</a></li>
+                                    {% endif %}
+                                    {% if access.opertec.stoc_sit== true %}
+                                        <li><a href="#stock_to_sit">Stock => Sitio</a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                            {% endif %}
+                            {% if access.reportes.all== true %}
+                            <li><a><i class="fa fa-list-alt"></i> Reportes <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    {% if access.reportes.stock_maestro== true %}
+                                        <li><a href="#stock_report">Stock Maestro</a></li>
+                                    {% endif %}
+                                    {% if access.reportes.stock_tec== true %}
+                                        <li><a href="#stock_report_tec">Stock por Tecnico</a></li>
+                                    {% endif %}
+                                    {% if access.reportes.stock_sit== true %}
+                                        <li><a href="#stock_report_sit">Stock por Sitio</a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                            {% endif %}
+                        {% endif %}
                     </ul>
                 </div>
 

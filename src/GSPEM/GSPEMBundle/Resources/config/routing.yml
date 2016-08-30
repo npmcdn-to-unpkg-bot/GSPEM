@@ -21,6 +21,20 @@ get_sitios:
     options:
         expose: true
     defaults: { _controller: GSPEMGSPEMBundle:Default:getSitios }
+get_contratistas:
+    path:     /getcontratistas
+    options:
+        expose: true
+    defaults: { _controller: GSPEMGSPEMBundle:Default:getContratistas }
+
+save_contratistas:
+    path:     /savecontratistas
+    options:
+        expose: true
+    defaults: { _controller: GSPEMGSPEMBundle:Default:saveContratisa }
+
+
+
 
 get_materiales_type:
     path:     /getmaterialestype
@@ -56,6 +70,18 @@ set_tarea_estado:
     options:
         expose: true
     defaults: { _controller: GSPEMGSPEMBundle:Default:setTareaState}
+get_perfiles:
+    path:     /get_perfiles
+    options:
+        expose: true
+    defaults: { _controller: GSPEMGSPEMBundle:Default:getPerfiles}
+
+set_perfiles:
+    path:     /set_perfiles
+    options:
+        expose: true
+    defaults: { _controller: GSPEMGSPEMBundle:Default:saveProfile}
+
 
 
 

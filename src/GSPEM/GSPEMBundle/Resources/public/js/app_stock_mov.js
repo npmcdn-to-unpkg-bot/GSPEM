@@ -21,6 +21,9 @@ GSPEMApp.controller('abmStockMov', function($scope,$http,$uibModal,toastr ,MovPe
         $http.get(Routing.generate('get_stock')
         ).success(function (stock) {
             $scope.stock=stock;
+            for (var a = 0; a < $scope.stock.length; a++) {
+                $scope.stock[a].referencia=angular.fromJson($scope.stock[a].referencia);
+            }
             //console.log($scope.stock);
         });
     };
@@ -173,7 +176,13 @@ GSPEMApp.controller('abmStockMovTecnicoToTecnico', function($scope,$http,$uibMod
             }
         }).then(function (response) {
                 console.log(response);
+
+
                 $scope.stock=response.data;
+                for (var a = 0; a < $scope.stock.length; a++) {
+                    $scope.stock[a].referencia=angular.fromJson($scope.stock[a].referencia);
+                }
+
             },
             function (response) { // optional
                 // failed
@@ -311,6 +320,10 @@ GSPEMApp.controller('abmStockMovTecnicoToTecnicoFromTec', function($scope,$http,
         $http.get(Routing.generate('get_stock_user')
         ).success(function (stock) {
             $scope.stock=stock;
+            for (var a = 0; a < $scope.stock.length; a++) {
+                $scope.stock[a].referencia=angular.fromJson($scope.stock[a].referencia);
+            }
+
             //console.log($scope.stock);
         });
     };
@@ -416,7 +429,7 @@ GSPEMApp.controller('abmStockMovTecnicoToTecnicoFromTec', function($scope,$http,
         }).then(function (response) {
                 console.log(response);
                 $scope.stockPendiente=[];
-                getStockFromUser();
+                getStock();
                 toastr.success('Guardado con éxito', 'Stock');
             },
             function (response) { // optional

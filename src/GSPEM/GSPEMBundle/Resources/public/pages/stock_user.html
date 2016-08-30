@@ -22,6 +22,7 @@
                     <tr>
                         <th>#</th>
                         <th>ID</th>
+                        <th>Referencia</th>
                         <th>Nombre</th>
                         <th>Stock Actual</th>
                     </tr>
@@ -30,6 +31,10 @@
                     <tr ng-repeat="item in stock | filter:{name:filtromaterial}">
                         <th>{{ $index +1 }}</th>
                         <td>{{ item.idCustom }}</td>
+                        <td>
+                            <button class="btn btn-sm" ng-style="{'background-color':item.referencia.ref1}"></button>
+                            <button class="btn btn-sm" ng-style="{'background-color':item.referencia.ref2}"></button>
+                        </td>
                         <td>{{ item.name }}</td>
                         <td style="text-align: right">{{ item.stock }}</td>
 
