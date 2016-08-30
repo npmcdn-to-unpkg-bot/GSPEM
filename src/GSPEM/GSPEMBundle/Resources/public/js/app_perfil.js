@@ -156,7 +156,7 @@ GSPEMApp.controller('ModelNewPerfil', function($filter,$scope,$http, $uibModalIn
 
     $scope.id=0;
 
-    $scope.user={all:false,abm:false, perfiles:false};
+    $scope.user={all:false,abm:false, perfiles:false,contratistas:false};
     $scope.sitios={all:false,abm:false};
     $scope.materiales={all:false,abm_tipo:false,abm:false};
     $scope.oper={all:false,stock:false,stock_to_tec:false,stock_tec_to_tec:false};
