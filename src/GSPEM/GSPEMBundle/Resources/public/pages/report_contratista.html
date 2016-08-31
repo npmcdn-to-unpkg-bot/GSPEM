@@ -3,12 +3,12 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>Stock por Técnico<small></small></h2>
+                <h2>Stock por Contratista<small></small></h2>
                 <div class="clearfix">
                     <div class="form-group has-success has-feedback">
                         <select  class="form-control" name="typematerial" id="mySelect"
-                                 ng-options="tecnico.name for tecnico in tecnicos track by tecnico.id"
-                                 ng-model="tecnicotarea" ng-change="updateReportUsers()"></select>
+                                 ng-options="contratista.name for contratista in contratistas track by tecnico.id"
+                                 ng-model="contratistaselected" ng-change="updateReportContratista()"></select>
                     </div>
                 </div>
             </div>
@@ -21,15 +21,17 @@
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Descripción</th>
+                        <th>Tecnico</th>
                         <th>Stock Actual</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="item in stock_tec | filter:{name:filtromaterial}">
+                    <tr ng-repeat="item in stock">
                         <th>{{ $index +1 }}</th>
                         <td>{{ item.idCustom }}</td>
                         <td>{{ item.name }}</td>
                         <td>{{ item.descript }}</td>
+                        <td>{{ item.nametec }} {{ item.apetec }}</td>
 
                         <td style="text-align: right">{{ item.stock }}</td>
 
