@@ -5,7 +5,7 @@
 GSPEMApp.controller('abmReports', function($scope,$http,$uibModal,toastr,MovPend) {
     $scope.animationsEnabled = false;
 
-
+    $scope.parseInt = parseInt;
     var getStock = function() {
         $http.get(Routing.generate('get_stock')
         ).success(function (stock) {
@@ -24,7 +24,6 @@ GSPEMApp.controller('abmReports', function($scope,$http,$uibModal,toastr,MovPend
         });
     }
     getUsers();
-
 
 
     var getSitios = function() {
@@ -117,3 +116,48 @@ GSPEMApp.controller('abmReports', function($scope,$http,$uibModal,toastr,MovPend
         saveAs(blob, "Reporte_"+$scope.sitioselected.name+".xls");
     };
 });
+GSPEMApp.controller('abmReportsContratista', function($scope,$http,$uibModal,toastr,MovPend) {
+    $scope.animationsEnabled = false;
+    $scope.contratistaselected;
+    var getData = function() {
+        $http.get(Routing.generate('get_contratistas')
+        ).success(function (contratistas) {
+
+            $scope.contratistas=contratistas;
+            $scope.contratistaselected=$scope.contratistas[0];
+            getStockFromContratista();
+        });
+    };
+    getData();
+
+    $scope.updateReportContratista=function () {
+        getStockFromContratista();
+    };
+
+    var getStockFromContratista=function () {
+
+        $http({
+            url: Routing.generate('get_stock_contratista'),
+            method: "POST",
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            data: {
+                id:   $scope.contratistaselected.id
+            },
+            transformRequest: function (obj) {
+                var str = [];
+                for (var p in obj)
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                return str.join("&");
+            }
+        }).then(function (response) {
+                console.log(response);
+                $scope.stock=response.data;
+            },
+            function (response) { // optional
+                // failed
+            });
+    }
+
+
+});
+

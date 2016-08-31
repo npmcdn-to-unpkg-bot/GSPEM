@@ -19,7 +19,7 @@ GSPEMApp.controller('abmStockMaestro', function($scope,$http,$uibModal,toastr,Mo
         });
     };
     getStock();
-
+    $scope.parseInt = parseInt;
 
     $scope.setStock=function (item) {
       //console.log(item.cant);

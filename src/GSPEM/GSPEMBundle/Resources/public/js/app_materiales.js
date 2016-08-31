@@ -138,6 +138,8 @@ GSPEMApp.controller('ModelNewMaterialCtrl', function($filter,$scope,$http, $uibM
     $scope.ubicacion="";
     $scope.origen="";
     $scope.descript="";
+    $scope.umbralmin=0;
+    $scope.umbralmax=0;
 
     $scope.id=0;
     $scope.id_custom="";
@@ -147,10 +149,13 @@ GSPEMApp.controller('ModelNewMaterialCtrl', function($filter,$scope,$http, $uibM
 
 
     if(item!=null){
-        console.log(item.type_id);
+        console.log(item);
         $scope.id=item.id;
         $scope.id_custom=item.idCustom
         $scope.name=item.name;
+        $scope.umbralmin=parseInt(item.umbralmin);
+        $scope.umbralmax=parseInt(item.umbralmax);
+
         $scope.ubicacion=item.ubicacion;
         $scope.origen=item.origen;
         if(item.referencia){
@@ -194,6 +199,8 @@ GSPEMApp.controller('ModelNewMaterialCtrl', function($filter,$scope,$http, $uibM
                     name: $scope.name,
                     descript: $scope.descript,
                     id: $scope.id,
+                    umbralmin:$scope.umbralmin,
+                    umbralmax:$scope.umbralmax,
                     referencia:angular.toJson($scope.referencia, 2),
                     origen:$scope.origen,
                     ubicacion:$scope.ubicacion,
