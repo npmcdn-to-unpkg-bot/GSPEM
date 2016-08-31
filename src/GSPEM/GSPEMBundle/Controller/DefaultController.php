@@ -65,7 +65,7 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
 
         $stmt = $em->getConnection()->createQueryBuilder()
-            ->select("m.id as id ,m.referencia as referencia ,m.ubicacion as ubicacion , m.origen as origen ,mt.id as type_id, m.id_custom as idCustom , m.descript as descript ,mt.name  as type , m.name as name")
+            ->select("m.id as id ,m.umbralmax as umbralmax , m.umbralmin as umbralmin,   m.referencia as referencia ,m.ubicacion as ubicacion , m.origen as origen ,mt.id as type_id, m.id_custom as idCustom , m.descript as descript ,mt.name  as type , m.name as name")
             ->from("materiales", "m")
             ->leftJoin("m", "materiales_type", "mt", "m.type = mt.id")
             ->orderBy('m.name', 'ASC')
@@ -259,7 +259,9 @@ class DefaultController extends Controller
         $material->setType($request->get("type"));
         $material->setReferencia($request->get("referencia"));
         $material->setIdCustom($request->get("id_custom"));
-
+        $material->setUmbralmin($request->get("umbralmin"));
+        //$material->setUmbralmax($request->get("umbralmax"));
+        
         if(!$request->get("id")){
             $em->persist($material);
         }
@@ -602,6 +604,32 @@ class DefaultController extends Controller
         $normalizers = array(new ObjectNormalizer());
         $serializer = new Serializer($normalizers, $encoders);
         return new Response($serializer->serialize(array("process"=>true),"json"),200,array('Content-Type'=>'application/json'));
+    }
+
+    public function deletePerfilAction(\Symfony\Component\HttpFoundation\Request $request){
+        $em = $this->getDoctrine()->getEntityManager();
+        $user=null;
+
+
+        $repo =$em->getRepository('GSPEM\GSPEMBundle\Entity\Perfiles');
+        $repouser =$em->getRepository('GSPEM\GSPEMBundle\Entity\User');
+
+        $repoData = $repo->findOneBy(array("id"=>$request->get("id")));
+        $user= $repouser->findOneBy(array("view"=>$repoData->getId()));
+
+        if(!isset($user)){
+            $em->remove($repoData);
+            $em->flush();
+            $response=true;
+        }else {
+            $response=false;
+        }
+
+        $encoders = array(new XmlEncoder(), new JsonEncoder());
+        $normalizers = array(new ObjectNormalizer());
+
+        $serializer = new Serializer($normalizers, $encoders);
+        return new Response($serializer->serialize(array("process"=>$response),"json"),200,array('Content-Type'=>'application/json'));
     }
 
 
