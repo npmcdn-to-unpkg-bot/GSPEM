@@ -34,4 +34,9 @@ GSPEM\GSPEMBundle\Entity\Material:
                 type: string
             referencia:
                 type: text
+            umbralmin:
+                type: integer
+            umbralmax:
+                type: integer
+
     lifecycleCallbacks: {  }
