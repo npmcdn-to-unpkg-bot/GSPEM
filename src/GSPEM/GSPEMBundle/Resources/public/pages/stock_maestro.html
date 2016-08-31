@@ -30,7 +30,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="item in stock | filter:filtromaterial">
+                    <tr ng-repeat="item in stock | filter:filtromaterial" >
                         <th>{{ $index +1 }}</th>
                         <td>{{ item.idCustom }}</td>
                         <td>
@@ -38,7 +38,15 @@
                             <button class="btn btn-sm" ng-style="{'background-color':item.referencia.ref2}"></button>
                         </td>
                         <td>{{ item.name }}</td>
-                        <td style="text-align: right">{{ item.stock }}</td>
+
+
+                        <td style="text-align: right" ng-class="{danger: parseInt(item.stock) < parseInt(item.umbralmin)}">
+                            <i ng-show="parseInt(item.umbralmin) > parseInt(item.stock)"  class="fa fa-exclamation" aria-hidden="true"></i>
+                            {{ item.stock }}
+                        </td>
+
+
+
                         <td style="text-align: right">
                             <input class="input-group-sm" ng-model="item.cant" type="number" style="width: 60px;height: 22px;text-align: right" placeholder="0"  />
                         </td>

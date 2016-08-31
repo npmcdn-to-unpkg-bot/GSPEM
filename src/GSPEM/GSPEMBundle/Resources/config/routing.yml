@@ -81,7 +81,11 @@ set_perfiles:
     options:
         expose: true
     defaults: { _controller: GSPEMGSPEMBundle:Default:saveProfile}
-
+delete_perfiles:
+    path:     /delete_perfil
+    options:
+        expose: true
+    defaults: { _controller: GSPEMGSPEMBundle:Default:deletePerfil}
 
 
 
@@ -97,6 +101,12 @@ get_stock_user:
     options:
         expose: true
     defaults: { _controller: GSPEMGSPEMBundle:Stock:getMaterialesStockByUser}
+
+get_stock_contratista:
+    path:     /get_stock_contratista
+    options:
+        expose: true
+    defaults: { _controller: GSPEMGSPEMBundle:Stock:getStockByContratista}
 
 get_stock_user_custom:
     path:     /get_stock_user_custom

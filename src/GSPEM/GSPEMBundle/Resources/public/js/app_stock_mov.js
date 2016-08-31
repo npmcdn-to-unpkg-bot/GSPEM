@@ -15,7 +15,7 @@ GSPEMApp.controller('abmStockMov', function($scope,$http,$uibModal,toastr ,MovPe
     }
     getUsers();
 
-
+    $scope.parseInt = parseInt;
 
     var getStock = function() {
         $http.get(Routing.generate('get_stock')

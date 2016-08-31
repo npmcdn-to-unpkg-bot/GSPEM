@@ -123,10 +123,10 @@ GSPEMApp.controller('abmPerfiles', function($scope,$http,$uibModal,toastr,MovPen
     };
 
 
-    $scope.deleteSitios= function (id) {
-        console.log("delete");
+    $scope.deletePerfil= function (id) {
+
         $http({
-            url: Routing.generate('delete_sitios'),
+            url: Routing.generate('delete_perfiles'),
             method: "POST",
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             data: {
@@ -139,10 +139,14 @@ GSPEMApp.controller('abmPerfiles', function($scope,$http,$uibModal,toastr,MovPen
                 return str.join("&");
             }
         }).then(function (response) {
-                gerPerfiles();
-
-
-            },
+                console.log(response.data);
+                if(response.data.process==false){
+                    toastr.warning('Perfil en uso', 'Error');
+                }else {
+                    toastr.success('Eliminado con exito', 'Perfil');
+                    gerPerfiles();
+                }
+                },
             function (response) { // optional
                 // failed
             });
@@ -161,7 +165,7 @@ GSPEMApp.controller('ModelNewPerfil', function($filter,$scope,$http, $uibModalIn
     $scope.materiales={all:false,abm_tipo:false,abm:false};
     $scope.oper={all:false,stock:false,stock_to_tec:false,stock_tec_to_tec:false};
     $scope.opertec={all:false,stock:false,stoc_pend:false,stoc_tec:false,stoc_sit:false};
-    $scope.reportes={all:false,stock_maestro:false,stock_tec:false,stock_sit:false};
+    $scope.reportes={all:false,stock_maestro:false,stock_tec:false,stock_sit:false,stock_cont:false};
 
     $scope.perfil={user:$scope.user,sitios:$scope.sitios,
         materiales:$scope.materiales,oper:$scope.oper,opertec:$scope.opertec,reportes:$scope.reportes};

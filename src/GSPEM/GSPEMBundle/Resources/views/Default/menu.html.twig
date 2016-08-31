@@ -73,7 +73,7 @@
                             </ul>
                         </li>
 
-                        <li><a><i class="fa fa-car"></i> Operaciones Tecnico <span class="fa fa-chevron-down"></span></a>
+                        <li><a><i class="fa fa-car"></i> Operaciones Técnico <span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
                                 <li><a href="#tareas_tecnico">Tareas</a></li>
                                 <li><a href="#stock_tecnico">Mi Stock</a></li>
@@ -86,7 +86,7 @@
                         <li><a><i class="fa fa-list-alt"></i> Reportes <span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
                                 <li><a href="#stock_report">Stock Maestro</a></li>
-                                <li><a href="#stock_report_tec">Stock por Tecnico</a></li>
+                                <li><a href="#stock_report_tec">Stock por Técnico</a></li>
                                 <li><a href="#stock_report_sit">Stock por Sitio</a></li>
                             </ul>
                         </li>
@@ -136,10 +136,10 @@
                                         <li><a href="#stock_maestro">Stock Maestro</a></li>
                                     {% endif %}
                                     {% if access.oper.stock_to_tec is defined and access.oper.stock_to_tec== true %}
-                                        <li><a href="#stock_to_tec">Stock Maestro => Tecnico</a></li>
+                                        <li><a href="#stock_to_tec">Stock Maestro => Técnico</a></li>
                                     {% endif %}
                                     {% if access.oper.stock_tec_to_tec is defined and access.oper.stock_tec_to_tec== true %}
-                                        <li><a href="#stock_tec_to_tec">Stock Tecnico => Tecnico</a></li>
+                                        <li><a href="#stock_tec_to_tec">Stock Técnico => Técnico</a></li>
                                     {% endif %}
                                 </ul>
                             </li>
@@ -154,7 +154,7 @@
                                         <li><a href="#stock_pend">Stock Pendiente</a></li>
                                     {% endif %}
                                     {% if access.opertec.stoc_tec is defined and access.opertec.stoc_tec== true %}
-                                        <li><a href="#mi_stock_to_tec">Stock => Tecnico</a></li>
+                                        <li><a href="#mi_stock_to_tec">Stock => Técnico</a></li>
                                     {% endif %}
                                     {% if access.opertec.stoc_sit is defined and access.opertec.stoc_sit== true %}
                                         <li><a href="#stock_to_sit">Stock => Sitio</a></li>
@@ -169,11 +169,18 @@
                                         <li><a href="#stock_report">Stock Maestro</a></li>
                                     {% endif %}
                                     {% if access.reportes.stock_tec is defined and access.reportes.stock_tec== true %}
-                                        <li><a href="#stock_report_tec">Stock por Tecnico</a></li>
+                                        <li><a href="#stock_report_tec">Stock por Técnico</a></li>
                                     {% endif %}
                                     {% if access.reportes.stock_sit is defined and access.reportes.stock_sit== true %}
                                         <li><a href="#stock_report_sit">Stock por Sitio</a></li>
                                     {% endif %}
+                                    {% if access.reportes.stock_cont is defined and access.reportes.stock_cont== true %}
+                                        <li><a href="#stock_contratista">Stock por Contratista</a></li>
+                                    {% endif %}
+                                    {% if access.reportes.stock_sit is defined and access.reportes.stock_sit== true %}
+                                        <!--<li><a href="#stock_movimientos">Movimientos de Stock</a></li>-->
+                                    {% endif %}
+
                                 </ul>
                             </li>
                             {% endif %}

@@ -34,7 +34,10 @@
                         <td>{{ item.name }}</td>
                         <td>{{ item.descript }}</td>
 
-                        <td style="text-align: right">{{ item.stock }}</td>
+                        <td style="text-align: right" ng-class="{danger: parseInt(item.stock) < parseInt(item.umbralmin)}">
+                            <i ng-show="parseInt(item.umbralmin) > parseInt(item.stock)"  class="fa fa-exclamation" aria-hidden="true"></i>
+                            {{ item.stock }}
+                        </td>
 
 
                     </tr>

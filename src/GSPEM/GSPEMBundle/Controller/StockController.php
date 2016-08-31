@@ -27,7 +27,7 @@ class StockController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
 
         $stmt = $em->getConnection()->createQueryBuilder()
-            ->select("m.id as id ,m.referencia as referencia ,m.id_custom as idCustom , m.descript as descript ,s.cant  as stock , m.name as name")
+            ->select("m.id as id ,m.umbralmax as umbralmax , m.umbralmin as umbralmin,m.referencia as referencia ,m.id_custom as idCustom , m.descript as descript ,s.cant  as stock , m.name as name")
             ->from("materiales", "m")
             ->innerJoin("m", "stock_maestro", "s", "m.id = s.material")
             ->orderBy('m.name', 'ASC')
@@ -72,6 +72,26 @@ class StockController extends Controller
         $serializer = new Serializer($normalizers, $encoders);
         return new Response($serializer->serialize($stmt->fetchAll(),"json"),200,array('Content-Type'=>'application/json'));
     }
+
+    public function getStockByContratistaAction(\Symfony\Component\HttpFoundation\Request $request){
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $stmt = $em->getConnection()->createQueryBuilder()
+            ->select("m.id as id ,u.first_name as nametec , u.last_name as apetec  ,m.referencia as referencia , m.id_custom as idCustom , m.descript as descript ,s.cant  as stock , m.name as name")
+            ->from("materiales", "m")
+            ->innerJoin("m", "stock_tecnico", "s", "m.id = s.material")
+            ->innerJoin("s", "users", "u", "s.tecnico = u.id")
+            ->innerJoin("u", "contratistas", "c", "u.contratista = c.id")
+            ->where("c.id =".$request->get("id"))
+            ->orderBy('u.id', 'ASC')
+            ->execute();
+        $encoders = array(new XmlEncoder(), new JsonEncoder());
+        $normalizers = array(new ObjectNormalizer());
+
+        $serializer = new Serializer($normalizers, $encoders);
+        return new Response($serializer->serialize($stmt->fetchAll(),"json"),200,array('Content-Type'=>'application/json'));
+    }
+
 
     public function getMaterialesStockBySiteCustomAction(\Symfony\Component\HttpFoundation\Request $request){
         $em = $this->getDoctrine()->getEntityManager();
