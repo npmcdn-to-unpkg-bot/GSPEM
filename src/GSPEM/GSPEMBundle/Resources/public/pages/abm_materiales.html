@@ -26,19 +26,19 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
+                        <th><a ng-click="sortBy('id')">ID <i class="fa fa-sort" aria-hidden="true"></i> </a></th>
+                        <th><a ng-click="sortBy('name')">Nombre <i class="fa fa-sort" aria-hidden="true"></i> </a> </th>
+                        <th><a ng-click="sortBy('descript')">Descripción <i class="fa fa-sort" aria-hidden="true"></i> </a></th>
                         <th>Referencia</th>
-                        <th>Origen</th>
-                        <th>Ubicación</th>
+                        <th><a ng-click="sortBy('origen')"> Origen <i class="fa fa-sort" aria-hidden="true"></i> </a></th>
+                        <th><a ng-click="sortBy('ubicacion')"> Ubicación <i class="fa fa-sort" aria-hidden="true"></i> </a></th>
                         <th>Umbral</th>
-                        <th>Tipo</th>
+                        <th><a ng-click="sortBy('type')"> Tipo <i class="fa fa-sort" aria-hidden="true"></i> </a></th>
                         <th>Opciones</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="material in materiales | filter:filtromaterial">
+                    <tr ng-repeat="material in materiales | filter:filtromaterial | orderBy:propertyName:reverse">
                         <th>{{ $index +1 }}</th>
                         <td>{{ material.idCustom }}</td>
                         <td>{{ material.name }}</td>

@@ -4,7 +4,14 @@
 
 
 GSPEMApp.controller('abmContratistas', function($scope,$http,$uibModal,toastr,MovPend) {
-    console.log("asdds");
+
+    $scope.propertyName = 'name';
+    $scope.reverse = true;
+    $scope.sortBy = function(propertyName) {
+        $scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
+        $scope.propertyName = propertyName;
+    };
+
     var getData = function() {
         $http.get(Routing.generate('get_contratistas')
         ).success(function (contratistas) {

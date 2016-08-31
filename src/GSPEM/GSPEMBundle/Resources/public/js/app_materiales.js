@@ -22,6 +22,13 @@ GSPEMApp.controller('abmMaterial', function($scope,$http,$uibModal,toastr,typesS
     }
 
 
+    $scope.propertyName = 'id';
+    $scope.reverse = true;
+    $scope.sortBy = function(propertyName) {
+        $scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
+        $scope.propertyName = propertyName;
+    };
+
 
     var getMateriales = function() {
         $http.get(Routing.generate('get_materiales')

@@ -29,6 +29,9 @@ GSPEMApp.service('MovPend', function($http,toastr) {
 
 GSPEMApp.config(function($routeProvider,toastrConfig) {
 
+    
+    
+    
     $routeProvider
         .when('/', {
             templateUrl : '../bundles/gspemgspem/pages/home.html',
