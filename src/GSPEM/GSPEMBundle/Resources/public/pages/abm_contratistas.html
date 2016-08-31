@@ -15,7 +15,7 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>Nombre</th>
+                        <th><a ng-click="sortBy('name')"> Nombre <i class="fa fa-sort" aria-hidden="true"></i> </a></th>
                         <th>Descripcion</th>
                         <th>Supervisor 1</th>
                         <th>Supervisor 2</th>
@@ -23,7 +23,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="contratista in contratistas">
+                    <tr ng-repeat="contratista in contratistas | orderBy:propertyName:reverse">
                         <td class="col-md-1">{{ $index +1 }}</td>
                         <td class="col-md-2">{{ contratista.name  }} </td>
                         <td class="col-md-2">{{ contratista.descript }} </td>

@@ -21,16 +21,16 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>ID</th>
+                        <th><a ng-click="sortBy('id')">ID <i class="fa fa-sort" aria-hidden="true"></i> </a></th>
                         <td>Referencia</td>
-                        <th>Nombre</th>
-                        <th>Stock Actual</th>
+                        <th><a ng-click="sortBy('name')"> Nombre <i class="fa fa-sort" aria-hidden="true"></i> </a></th>
+                        <th><a ng-click="sortBy('stock')"> Stock Actual <i class="fa fa-sort" aria-hidden="true"></i> </a></th>
                         <th>Stock Entrante / Saliente</th>
                         <th>Operaciones</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="item in stock | filter:filtromaterial" >
+                    <tr ng-repeat="item in stock | filter:filtromaterial | orderBy:propertyName:reverse" >
                         <th>{{ $index +1 }}</th>
                         <td>{{ item.idCustom }}</td>
                         <td>
@@ -44,7 +44,6 @@
                             <i ng-show="parseInt(item.umbralmin) > parseInt(item.stock)"  class="fa fa-exclamation" aria-hidden="true"></i>
                             {{ item.stock }}
                         </td>
-
 
 
                         <td style="text-align: right">

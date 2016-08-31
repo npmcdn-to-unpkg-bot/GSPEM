@@ -15,6 +15,14 @@ GSPEMApp.controller('abmStockMov', function($scope,$http,$uibModal,toastr ,MovPe
     }
     getUsers();
 
+
+    $scope.propertyName = 'id';
+    $scope.reverse = true;
+    $scope.sortBy = function(propertyName) {
+        $scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
+        $scope.propertyName = propertyName;
+    };
+
     $scope.parseInt = parseInt;
 
     var getStock = function() {
@@ -152,6 +160,13 @@ GSPEMApp.controller('abmStockMovTecnicoToTecnico', function($scope,$http,$uibMod
         });
     }
     getUsers();
+
+    $scope.propertyName = 'id';
+    $scope.reverse = true;
+    $scope.sortBy = function(propertyName) {
+        $scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
+        $scope.propertyName = propertyName;
+    };
 
 
     $scope.getStockOrigen= function () {
