@@ -130,7 +130,7 @@
                             {% endif %}
 
                             {% if access.oper.all is defined and access.oper.all== true %}
-                            <li><a><i class="fa fa-pencil"></i> Operaciones <span class="fa fa-chevron-down"></span></a>
+                            <li><a><i class="fa fa-pencil"></i> Manejo de Stock <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
                                     {% if access.oper.stock is defined and access.oper.stock== true %}
                                         <li><a href="#stock_maestro">Stock Maestro</a></li>
@@ -151,7 +151,7 @@
                                         <li><a href="#stock_tecnico">Mi Stock</a></li>
                                     {% endif %}
                                     {% if access.opertec.stoc_pend is defined and access.opertec.stoc_pend== true %}
-                                        <li><a href="#stock_pend">Stock Pendiente</a></li>
+                                        <li><a href="#stock_pend">Aceptación de Stock</a></li>
                                     {% endif %}
                                     {% if access.opertec.stoc_tec is defined and access.opertec.stoc_tec== true %}
                                         <li><a href="#mi_stock_to_tec">Stock => Técnico</a></li>
