@@ -283,4 +283,62 @@ class Material
     {
         return $this->referencia;
     }
+    /**
+     * @var integer
+     */
+    private $umbralmin;
+
+    /**
+     * @var integer
+     */
+    private $umbralmax;
+
+
+    /**
+     * Set umbralmin
+     *
+     * @param integer $umbralmin
+     *
+     * @return Material
+     */
+    public function setUmbralmin($umbralmin)
+    {
+        $this->umbralmin = $umbralmin;
+
+        return $this;
+    }
+
+    /**
+     * Get umbralmin
+     *
+     * @return integer
+     */
+    public function getUmbralmin()
+    {
+        return $this->umbralmin;
+    }
+
+    /**
+     * Set umbralmax
+     *
+     * @param integer $umbralmax
+     *
+     * @return Material
+     */
+    public function setUmbralmax($umbralmax)
+    {
+        $this->umbralmax = $umbralmax;
+
+        return $this;
+    }
+
+    /**
+     * Get umbralmax
+     *
+     * @return integer
+     */
+    public function getUmbralmax()
+    {
+        return $this->umbralmax;
+    }
 }
