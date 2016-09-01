@@ -260,6 +260,56 @@ class StockController extends Controller
         return new Response($serializer->serialize($mopendientes,"json"),200,array('Content-Type'=>'application/json'));
     }
 
+
+
+    public function getAllMovimientosAction(){
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $stmt = $em->getConnection()->createQueryBuilder()
+            ->select("mov.id as id ,CONCAT (u.first_name ,' ',  u.last_name) 
+            as tecnico, CONCAT (us.first_name , us.last_name) as origen ,
+            mov.state as state ,mov.nota as nota ,mov.type as type,
+            DATE_FORMAT(mov.fin, '%m-%d-%Y %h:%i') as fin ,
+            DATE_FORMAT(mov.inicio, '%m-%d-%Y %h:%i') as inicio")
+            ->from("movimiento_stock_tecnico", "mov")
+            ->leftJoin("mov", "users", "u", "u.id = mov.tecnico")
+            ->leftJoin("mov", "users", "us", "us.id = mov.origen")
+            ->orderBy('mov.inicio', 'ASC')
+            ->execute();
+
+        foreach ($stmt->fetchAll() as $mov){
+
+            $item=[];
+
+            $stmtItems = $em->getConnection()->createQueryBuilder()
+                ->select("st.id as id_item ,m.referencia as referencia,st.cant, m.id as id , m.id_custom as idCustom , m.descript as descript , m.name as name")
+                ->from("stock_items_mov", "st")
+                ->innerJoin("st", "materiales", "m", "st.material = m.id")
+                ->where("st.mov = ".$mov['id'])
+                ->orderBy('m.name', 'ASC')
+                ->execute();
+            $item['id']=$mov['id'];
+            $item['items']=$stmtItems->fetchAll();
+            $item['inicio']=$mov['inicio'];
+            $item['fin']=$mov['fin'];
+
+            $item['origen']=$mov['origen'];
+            $item['tecnico']=$mov['tecnico'];
+            $item['nota']=$mov['nota'];
+            $item['state']=$mov['state'];
+            $item['type']=$mov['type'];
+
+            $result[]=$item;
+        }
+
+        $encoders = array(new XmlEncoder(), new JsonEncoder());
+        $normalizers = array(new ObjectNormalizer());
+
+        $serializer = new Serializer($normalizers, $encoders);
+        return new Response($serializer->serialize($result,"json"),200,array('Content-Type'=>'application/json'));
+    }
+
+
     public function getMovimientosPendientesItemsAction(){
         $em = $this->getDoctrine()->getEntityManager();
         $user=$this->get('security.token_storage')->getToken()->getUser();
@@ -310,9 +360,9 @@ class StockController extends Controller
         $movimiento = $repo->findOneBy(array("id"=>$data['id']));
 
 
-        if($data['items_rejected']!=""){
-            // seteo estodo 2 , aceptado pero con algnunos rechazos
-            $movimiento->setState(2);
+        if($data['items_rejected']!="" && count($data['items_rejected']>0)){
+            // seteo estodo 3 , aceptado pero con algnunos rechazos
+            $movimiento->setState(3);
             $movimiento->setNota($data['nota']);
             //asigno rechazados
             foreach ($data["items_rejected"] as $item){
