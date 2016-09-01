@@ -231,7 +231,25 @@ GSPEMApp.controller('abmReportsMov', function($scope,$http,$uibModal,toastr,MovP
             //$log.info('Modal dismissed at: ' + new Date());
         });
     }
-    
+
+    $scope.showNota=function (nota) {
+        var modalInstance = $uibModal.open({
+            templateUrl: "nota_mov.html",
+            controller: "ModalNotaMov",
+            resolve: {
+                nota: function () {
+                    return nota;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+            $scope.selected = selectedItem;
+        }, function () {
+            //$log.info('Modal dismissed at: ' + new Date());
+        });
+    }
+
 
 });
 
@@ -243,4 +261,16 @@ GSPEMApp.controller('ModalItemsMov', function($filter,$scope,$http, $uibModalIns
         $scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
         $scope.propertyName = propertyName;
     };
+    $scope.cerrar=function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+
+});
+
+GSPEMApp.controller('ModalNotaMov', function($filter,$scope,$http, $uibModalInstance, nota,toastr) {
+    $scope.nota = nota;
+    $scope.cerrar=function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+
 });

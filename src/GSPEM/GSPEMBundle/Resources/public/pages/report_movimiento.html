@@ -28,7 +28,7 @@
                         <th><a ng-click="sortBy('state')"> Estado <i class="fa fa-sort" aria-hidden="true"></i> </a></th>
                         <th><a ng-click="sortBy('type')"> Tipo <i class="fa fa-sort" aria-hidden="true"></i> </a></th>
                         <th>Items</th>
-
+                        <th>Nota</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -45,7 +45,14 @@
                         <td ng-if="mov.type==1">Maestro => Técnico</td>
                         <td ng-if="mov.type==2">Técnico => Técnico</td>
 
-                        <td><a ng-click="showItems(mov.items)" class="btn btn-success btn-sm"><i class="fa fa-list" aria-hidden="true"></i></a> </td>
+                        <td>
+                            <a ng-click="showItems(mov.items)" class="btn btn-success btn-sm"><i class="fa fa-list" aria-hidden="true"></i></a>
+
+                        </td>
+                        <td>
+                            <a ng-show="mov.nota.length > 0" ng-click="showNota(mov.nota)" class="btn btn-success btn-sm"><i class="fa fa-commenting-o" aria-hidden="true"></i></a>
+                        </td>
+
                     </tr>
                     </tbody>
                 </table>
