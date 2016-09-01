@@ -63,7 +63,7 @@
 
 
 
-                        <li><a><i class="fa fa-pencil"></i> Operaciones <span class="fa fa-chevron-down"></span></a>
+                        <li><a><i class="fa fa-wrench"></i> Operaciones <span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
                                 <li><a href="#tareas_abm">Tareas</a></li>
                                 <li><a href="#stock_maestro">Stock Maestro</a></li>
@@ -83,7 +83,7 @@
                             </ul>
                         </li>
 
-                        <li><a><i class="fa fa-list-alt"></i> Reportes <span class="fa fa-chevron-down"></span></a>
+                        <li><a><i class="fa fa-area-chart"></i> Reportes <span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
                                 <li><a href="#stock_report">Stock Maestro</a></li>
                                 <li><a href="#stock_report_tec">Stock por Técnico</a></li>
@@ -130,7 +130,7 @@
                             {% endif %}
 
                             {% if access.oper.all is defined and access.oper.all== true %}
-                            <li><a><i class="fa fa-pencil"></i> Manejo de Stock <span class="fa fa-chevron-down"></span></a>
+                            <li><a><i class="fa fa-sitemap"></i> Manejo de Stock <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
                                     {% if access.oper.stock is defined and access.oper.stock== true %}
                                         <li><a href="#stock_maestro">Stock Maestro</a></li>
@@ -145,7 +145,7 @@
                             </li>
                             {% endif %}
                             {% if access.opertec.all is defined and access.opertec.all== true %}
-                            <li><a><i class="fa fa-car"></i> Operaciones  <span class="fa fa-chevron-down"></span></a>
+                            <li><a><i class="fa fa-wrench"></i> Operaciones  <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
                                     {% if access.opertec.stock is defined and access.opertec.stock== true %}
                                         <li><a href="#stock_tecnico">Mi Stock</a></li>
@@ -163,7 +163,7 @@
                             </li>
                             {% endif %}
                             {% if access.reportes.all is defined and access.reportes.all== true %}
-                            <li><a><i class="fa fa-list-alt"></i> Reportes <span class="fa fa-chevron-down"></span></a>
+                            <li><a><i class="fa fa-area-chart"></i> Reportes <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
                                     {% if access.reportes.stock_maestro is defined and access.reportes.stock_maestro== true %}
                                         <li><a href="#stock_report">Stock Maestro</a></li>

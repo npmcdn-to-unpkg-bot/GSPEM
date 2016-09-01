@@ -1,26 +1,45 @@
 /**
  * Created by gabo on 26/07/16.
  */
-GSPEMApp.controller('abmPerfil', function($scope,$http,$uibModal,toastr,MovPend) {
+GSPEMApp.controller('abmPerfil', function($filter,$scope,$http,$uibModal,toastr,MovPend) {
     $scope.passedite=true;
     $scope.pass="";
+
+
+    $scope.showperfiledit=false;
 
     var getPerfil = function() {
         $http.get(Routing.generate('get_profile')
         ).success(function (user) {
-            $scope.userdata=user;
+            console.log(user);
+            $scope.userdata=user.user;
+            $scope.access=angular.fromJson(user.profile.access);
+            if($scope.access.user.perfiles){
+                $scope.showperfiledit=true;
+            }
+            console.log($scope.access);
             $scope.id=$scope.userdata.id;
             $scope.nombre=$scope.userdata.name;
             $scope.apellido=$scope.userdata.lastName;
-            $scope.perfil=$scope.userdata.view;
+            $scope.profileselected=$filter('filter')($scope.perfiles,{"id":$scope.userdata.view})[0];
             $scope.mail=$scope.userdata.mail;
             $scope.user=$scope.userdata.username;
             //$scope.pass=$scope.userdata.password;
             $scope.phone=$scope.userdata.phone;
 
-            console.log($scope.userdata);
         });
     };
+
+    var gerPerfiles = function() {
+        $http.get(Routing.generate('get_perfiles')
+        ).success(function (perfiles) {
+            $scope.perfiles=perfiles;
+            console.log($scope.perfiles);
+            $scope.profileselected=$scope.perfiles[0];
+            getPerfil();
+        });
+    };
+    gerPerfiles();
 
     $scope.getActive= function(val1,val2){
         if(val1==val2)
@@ -40,7 +59,7 @@ GSPEMApp.controller('abmPerfil', function($scope,$http,$uibModal,toastr,MovPend)
             $scope.passedite=true;
         }
     }
-    getPerfil();
+
 
     $scope.saveUser= function () {
         if ($scope.nombre.length == 0 || $scope.user.length == 0 || $scope.mail.length == 0 ) {
@@ -73,7 +92,7 @@ GSPEMApp.controller('abmPerfil', function($scope,$http,$uibModal,toastr,MovPend)
                 password:$scope.pass,
                 phone:$scope.phone,
                 mail:$scope.mail,
-                view:$scope.perfil
+                view:$scope.profileselected.id
             },
             transformRequest: function (obj) {
                 var str = [];

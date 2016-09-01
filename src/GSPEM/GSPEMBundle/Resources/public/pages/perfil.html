@@ -58,13 +58,15 @@
              placeholder="Telefono">
     </div>
 
-    <label>Perfil :</label>
-    <div class="row">
-     <div class="btn-group">
-      <a href class="btn btn-default" ng-class="getActive(1,perfil)" ng-click="setActiveUser(1)" ui-exclusion-group='myButtons'>Adminstrador</a>
-      <a href class="btn btn-default" ng-class="getActive(2,perfil)" ng-click="setActiveUser(2)" ui-exclusion-group='myButtons'>Adminstrador Remoto</a>
-      <a href class="btn btn-default" ng-class="getActive(3,perfil)" ng-click="setActiveUser(3)" ui-exclusion-group='myButtons'>Tecnico</a>
-     </div>
+
+    <div ng-show="showperfiledit==true" class="form-group has-success has-feedback">
+     <label>Perfil :</label>
+     <select  class="form-control" name="typematerial" id="mySelect"
+              ng-options="perfil.name for perfil in perfiles track by perfil.id"
+
+              ng-model="profileselected"></select>
+
+    </div>
 
     </div>
    </div>
