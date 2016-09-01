@@ -18,14 +18,14 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th>Stock Actual</th>
+                        <th><a ng-click="sortBy('idCustom')">ID <i class="fa fa-sort" aria-hidden="true"></i> </a></th>
+                        <th><a ng-click="sortBy('name')"> Nombre <i class="fa fa-sort" aria-hidden="true"></i> </a></th>
+                        <th><a ng-click="sortBy('descript')"> Descripción <i class="fa fa-sort" aria-hidden="true"></i> </a></th>
+                        <th><a ng-click="sortBy('stock')"> Stock Actual <i class="fa fa-sort" aria-hidden="true"></i> </a></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="item in stock_sit | filter:{name:filtromaterial}">
+                    <tr ng-repeat="item in stock_sit | filter:{name:filtromaterial} | orderBy:propertyName:reverse">
                         <th>{{ $index +1 }}</th>
                         <td>{{ item.idCustom }}</td>
                         <td>{{ item.name }}</td>

@@ -5,6 +5,14 @@
 GSPEMApp.controller('abmReports', function($scope,$http,$uibModal,toastr,MovPend) {
     $scope.animationsEnabled = false;
 
+
+    $scope.propertyName = 'id';
+    $scope.reverse = true;
+    $scope.sortBy = function(propertyName) {
+        $scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
+        $scope.propertyName = propertyName;
+    };
+
     $scope.parseInt = parseInt;
     var getStock = function() {
         $http.get(Routing.generate('get_stock')
@@ -119,6 +127,15 @@ GSPEMApp.controller('abmReports', function($scope,$http,$uibModal,toastr,MovPend
 GSPEMApp.controller('abmReportsContratista', function($scope,$http,$uibModal,toastr,MovPend) {
     $scope.animationsEnabled = false;
     $scope.contratistaselected;
+
+    $scope.propertyName = 'id';
+    $scope.reverse = true;
+    $scope.sortBy = function(propertyName) {
+        $scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
+        $scope.propertyName = propertyName;
+    };
+
+
     var getData = function() {
         $http.get(Routing.generate('get_contratistas')
         ).success(function (contratistas) {
