@@ -126,12 +126,16 @@ GSPEMApp.controller('abmStockPend', function($scope,$http,$uibModal,toastr,MovPe
 
 
     var saveStock= function (id,items) {
-
+        $scope.itemsrejected_post="";
         $scope.itemsrejected=[];
+
         for (var a = 0; a < items.length; a++) {
             if(items[a].cantrechazo>0){
                 $scope.itemsrejected.push(items[a]);
             }
+        }
+        if($scope.itemsrejected.length>0){
+            $scope.itemsrejected_post=$scope.itemsrejected;
         }
 
         $http({
@@ -141,13 +145,15 @@ GSPEMApp.controller('abmStockPend', function($scope,$http,$uibModal,toastr,MovPe
             data: {
                 nota:$scope.descript_reject,
                 id: id,
-                items_rejected:$scope.itemsrejected
+                items_rejected:$scope.itemsrejected_post
             }
         }).then(function (response) {
+                console.log(response);
                 toastr.success('Transferencia realizada con exito', 'Stock');
                 getStockPend();
             },
             function (response) { // optional
+                console.log(response);
                 // failed
             });
     }

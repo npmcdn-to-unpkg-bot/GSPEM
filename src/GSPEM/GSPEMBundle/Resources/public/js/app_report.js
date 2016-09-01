@@ -135,6 +135,13 @@ GSPEMApp.controller('abmReportsContratista', function($scope,$http,$uibModal,toa
         $scope.propertyName = propertyName;
     };
 
+    $scope.exportar=function () {
+
+        var blob = new Blob([document.getElementById('exportable').innerHTML], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+        });
+        saveAs(blob, "Reporte_Stock_Contratistas.xls");
+    };
 
     var getData = function() {
         $http.get(Routing.generate('get_contratistas')
@@ -177,4 +184,63 @@ GSPEMApp.controller('abmReportsContratista', function($scope,$http,$uibModal,toa
 
 
 });
+GSPEMApp.controller('abmReportsMov', function($scope,$http,$uibModal,toastr,MovPend) {
+    $scope.animationsEnabled = false;
+    $scope.contratistaselected;
 
+    $scope.exportar=function () {
+
+        var blob = new Blob([document.getElementById('exportable').innerHTML], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+        });
+        saveAs(blob, "Reporte_Movimientos.xls");
+    };
+    
+    $scope.propertyName = 'id';
+    $scope.reverse = true;
+    $scope.sortBy = function(propertyName) {
+        $scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
+        $scope.propertyName = propertyName;
+    };
+
+
+    var getData = function() {
+        $http.get(Routing.generate('get_report_movs')
+        ).success(function (movs) {
+            $scope.movs=movs;
+            
+        });
+    };
+    getData();
+
+    
+    $scope.showItems=function (items) {
+        var modalInstance = $uibModal.open({
+            templateUrl: "items_mov.html",
+            controller: "ModalItemsMov",
+            resolve: {
+                items: function () {
+                    return items;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+            $scope.selected = selectedItem;
+        }, function () {
+            //$log.info('Modal dismissed at: ' + new Date());
+        });
+    }
+    
+
+});
+
+GSPEMApp.controller('ModalItemsMov', function($filter,$scope,$http, $uibModalInstance, items,toastr) {
+    $scope.stock = items;
+    $scope.propertyName = 'name';
+    $scope.reverse = true;
+    $scope.sortBy = function(propertyName) {
+        $scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
+        $scope.propertyName = propertyName;
+    };
+});

@@ -109,6 +109,11 @@ GSPEMApp.config(function($routeProvider,toastrConfig) {
             templateUrl : '../bundles/gspemgspem/pages/report_maestro.html',
             controller  : 'abmReports'
         })
+        .when('/stock_movimientos', {
+            templateUrl : '../bundles/gspemgspem/pages/report_movimiento.html',
+            controller  : 'abmReportsMov'
+        })
+
         .when('/stock_report_tec', {
             templateUrl : '../bundles/gspemgspem/pages/report_tecnico.html',
             controller  : 'abmReports'
