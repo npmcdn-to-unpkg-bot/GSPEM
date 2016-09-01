@@ -502,13 +502,17 @@ class DefaultController extends Controller
     
 
     public function  getUserProfileAction(){
-
+        $em = $this->getDoctrine()->getEntityManager();
         $user=$this->get('security.token_storage')->getToken()->getUser();
+        $perfil=null;
+        $repo =$em->getRepository('GSPEM\GSPEMBundle\Entity\Perfiles');
+        $perfil = $repo->findOneBy(array("id"=>$user->getView()));
+        
         $encoders = array(new XmlEncoder(), new JsonEncoder());
         $normalizers = array(new ObjectNormalizer());
 
         $serializer = new Serializer($normalizers, $encoders);
-        return new Response($serializer->serialize($user,"json"),200,array('Content-Type'=>'application/json'));
+        return new Response($serializer->serialize(array("user"=>$user,"profile"=>$perfil),"json"),200,array('Content-Type'=>'application/json'));
     }
 
     public function getSitiosTypeAction(){

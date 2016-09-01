@@ -148,8 +148,47 @@ GSPEMApp.config(function($routeProvider,toastrConfig) {
 
 });
 
-GSPEMApp.controller('mainController', function($scope,MovPend) {
-    $scope.message = 'Hola, Mundo!';
+GSPEMApp.controller('mainController', function($scope,MovPend,$http) {
+
+    $scope.parseInt = parseInt;
+    $scope.showperfiledit=false;
+    $scope.cargando=true;
+    var getStock = function() {
+        $http.get(Routing.generate('get_stock')
+        ).success(function (stock) {
+            $scope.cargando=false;
+            $scope.stock=[];
+            $scope.stock_temp=stock;
+            for (var a = 0; a < $scope.stock_temp.length; a++) {
+                if(parseInt($scope.stock_temp[a].stock) < parseInt($scope.stock_temp[a].umbralmin)){
+                    $scope.stock.push($scope.stock_temp[a]);
+                }
+            }
+            //console.log($scope.stock);
+        });
+    };
+
+    var getPerfil = function() {
+        $http.get(Routing.generate('get_profile')
+        ).success(function (user) {
+            $scope.access=angular.fromJson(user.profile.access);
+            if($scope.access.oper.all){
+                // valido que tenga acceso al stock maestro para ver las alertas
+                getStock();
+                $scope.showperfiledit=true;
+
+            }else {
+                $scope.cargando=false;
+            }
+        });
+    };
+    getPerfil();
+
+
+
+
+
+
 });
 
 GSPEMApp.controller('aboutController', function($scope) {
