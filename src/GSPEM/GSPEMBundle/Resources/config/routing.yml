@@ -120,7 +120,11 @@ get_stock_sitio_custom:
         expose: true
     defaults: { _controller: GSPEMGSPEMBundle:Stock:getMaterialesStockBySiteCustom}
 
-
+get_report_movs:
+    path:     /get_report_movs
+    options:
+        expose: true
+    defaults: { _controller: GSPEMGSPEMBundle:Stock:getAllMovimientos}
 
 
 
