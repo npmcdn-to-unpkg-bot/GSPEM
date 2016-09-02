@@ -3,7 +3,8 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>Stock por Contratista<small></small></h2>
+                <h2>Stock por Contratista<small></small> <i ng-show="cargando==true" class="fa fa-refresh fa-spin fa-1x fa-fw"></i>
+                    <span class="sr-only">Loading...</span></h2>
                 <div class="clearfix">
                     <div class="form-group has-success has-feedback">
                         <select  class="form-control" name="typematerial" id="mySelect"

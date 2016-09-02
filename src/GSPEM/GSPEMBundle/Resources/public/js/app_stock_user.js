@@ -6,6 +6,13 @@ GSPEMApp.controller('abmStockUser', function($scope,$http,$uibModal,toastr,MovPe
     $scope.animationsEnabled = false;
 
 
+    $scope.propertyName = 'idCustom';
+    $scope.reverse = true;
+    $scope.sortBy = function(propertyName) {
+        $scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
+        $scope.propertyName = propertyName;
+    };
+
     var getStock = function() {
         $http.get(Routing.generate('get_stock_user')
         ).success(function (stock) {

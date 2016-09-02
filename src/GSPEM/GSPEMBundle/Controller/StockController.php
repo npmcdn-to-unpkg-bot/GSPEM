@@ -73,6 +73,23 @@ class StockController extends Controller
         return new Response($serializer->serialize($stmt->fetchAll(),"json"),200,array('Content-Type'=>'application/json'));
     }
 
+    public function getMaterialesStockFromTecnicosAction(){
+        $em = $this->getDoctrine()->getEntityManager();
+        $stmt = $em->getConnection()->createQueryBuilder()
+            ->select("m.id as id ,u.id as tecid , CONCAT (u.first_name ,' ', u.last_name ) as tecnico  ,m.referencia as referencia , m.id_custom as idCustom , m.descript as descript ,s.cant  as stock , m.name as name")
+            ->from("materiales", "m")
+            ->innerJoin("m", "stock_tecnico", "s", "m.id = s.material")
+            ->leftJoin("s","users" ,"u","s.tecnico=u.id" )
+            ->orderBy('m.name', 'ASC')
+            ->execute();
+        $encoders = array(new XmlEncoder(), new JsonEncoder());
+        $normalizers = array(new ObjectNormalizer());
+
+        $serializer = new Serializer($normalizers, $encoders);
+        return new Response($serializer->serialize($stmt->fetchAll(),"json"),200,array('Content-Type'=>'application/json'));
+    }
+
+
     public function getStockByContratistaAction(\Symfony\Component\HttpFoundation\Request $request){
         $em = $this->getDoctrine()->getEntityManager();
 
@@ -170,6 +187,21 @@ class StockController extends Controller
         $repoStockSit =$em->getRepository('GSPEM\GSPEMBundle\Entity\StockSitio');
         $sitio=json_decode($request->getContent(),true)["sitio"];
 
+
+        $user_id=$this->get('security.token_storage')->getToken()->getUser()->getId();
+        $stockTecMov= new MovStockTec();
+        $stockTecMov->setState(1);
+        $stockTecMov->setInicio(new \DateTime());
+        $stockTecMov->setOrigen($user_id);
+        // movientos de tecnico a sitio
+
+        $stockTecMov->setType(3);
+        $stockTecMov->setTecnico($sitio);
+        $em->persist($stockTecMov);
+        $em->flush();
+
+
+
         foreach (json_decode($request->getContent(),true)["items"] as $item){
             $itemStockSit=$repoStockSit->findOneBy(array("sitio"=>$sitio,"material"=>$item['id']));
             if ($itemStockSit!=""){
@@ -181,6 +213,13 @@ class StockController extends Controller
                 $StockSitio->setMaterial($item['id']);
                 $em->persist($StockSitio);
             }
+
+            $stockItems= new StockItemsMov();
+            $stockItems->setMaterial($item['id']);
+            $stockItems->setMov($stockTecMov->getId());
+            $stockItems->setCant($item['stock']);
+            $em->persist($stockItems);
+
             $em->flush();
         }
         $encoders = array(new XmlEncoder(), new JsonEncoder());
@@ -246,6 +285,9 @@ class StockController extends Controller
         return new Response($serializer->serialize(array("response"=>true),"json"),200,array('Content-Type'=>'application/json'));
     }
 
+
+
+
     public function getMovimientosPendientesAction(){
         $em = $this->getDoctrine()->getEntityManager();
         $user=$this->get('security.token_storage')->getToken()->getUser();
@@ -264,10 +306,10 @@ class StockController extends Controller
 
     public function getAllMovimientosAction(){
         $em = $this->getDoctrine()->getEntityManager();
-
+        // tecsitid puede ser el tecnico id  o un sitio id por eso ese nombre
         $stmt = $em->getConnection()->createQueryBuilder()
             ->select("mov.id as id ,CONCAT (u.first_name ,' ',  u.last_name) 
-            as tecnico, CONCAT (us.first_name , us.last_name) as origen ,
+            as tecnico,mov.tecnico as tecsitid, CONCAT (us.first_name ,' ', us.last_name) as origen ,
             mov.state as state ,mov.nota as nota ,mov.type as type,
             DATE_FORMAT(mov.fin, '%m-%d-%Y %h:%i') as fin ,
             DATE_FORMAT(mov.inicio, '%m-%d-%Y %h:%i') as inicio")
@@ -293,8 +335,19 @@ class StockController extends Controller
             $item['inicio']=$mov['inicio'];
             $item['fin']=$mov['fin'];
 
+
+
             $item['origen']=$mov['origen'];
-            $item['tecnico']=$mov['tecnico'];
+            if($mov['type']==3){
+                //necesito sacar el nombre del sitio
+                $repo =$em->getRepository('GSPEM\GSPEMBundle\Entity\Sitio');
+                $sitio = $repo->findOneBy(array("id"=>$mov['tecsitid']));
+                $item['tecnico']=$sitio->getName();
+            }else {
+                $item['tecnico']=$mov['tecnico'];
+            }
+
+
             $item['nota']=$mov['nota'];
             $item['state']=$mov['state'];
             $item['type']=$mov['type'];

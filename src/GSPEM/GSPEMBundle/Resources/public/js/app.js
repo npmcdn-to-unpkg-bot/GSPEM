@@ -109,6 +109,10 @@ GSPEMApp.config(function($routeProvider,toastrConfig) {
             templateUrl : '../bundles/gspemgspem/pages/report_maestro.html',
             controller  : 'abmReports'
         })
+        .when('/stock_alertas', {
+            templateUrl : '../bundles/gspemgspem/pages/report_alertas.html',
+            controller  : 'abmReportsAlertas'
+        })
         .when('/stock_movimientos', {
             templateUrl : '../bundles/gspemgspem/pages/report_movimiento.html',
             controller  : 'abmReportsMov'
@@ -116,7 +120,7 @@ GSPEMApp.config(function($routeProvider,toastrConfig) {
 
         .when('/stock_report_tec', {
             templateUrl : '../bundles/gspemgspem/pages/report_tecnico.html',
-            controller  : 'abmReports'
+            controller  : 'reportStockAllUsers'
         })
         .when('/stock_report_sit', {
             templateUrl : '../bundles/gspemgspem/pages/report_sitio.html',
