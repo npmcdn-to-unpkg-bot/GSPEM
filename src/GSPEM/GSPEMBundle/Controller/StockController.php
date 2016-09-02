@@ -192,6 +192,7 @@ class StockController extends Controller
         $stockTecMov= new MovStockTec();
         $stockTecMov->setState(1);
         $stockTecMov->setInicio(new \DateTime());
+        $stockTecMov->setFin(new \DateTime());
         $stockTecMov->setOrigen($user_id);
         // movientos de tecnico a sitio
 
