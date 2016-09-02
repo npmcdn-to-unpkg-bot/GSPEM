@@ -180,6 +180,9 @@
                                     {% if access.reportes.stock_mov is defined and access.reportes.stock_sit== true %}
                                         <li><a href="#stock_movimientos">Movimientos de Stock</a></li>
                                     {% endif %}
+                                    {% if access.reportes.stock_alertas is defined and access.reportes.stock_sit== true %}
+                                        <li><a href="#stock_alertas">Alertas de Stock</a></li>
+                                    {% endif %}
 
                                 </ul>
                             </li>

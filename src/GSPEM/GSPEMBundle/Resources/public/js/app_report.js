@@ -4,7 +4,7 @@
 
 GSPEMApp.controller('abmReports', function($scope,$http,$uibModal,toastr,MovPend) {
     $scope.animationsEnabled = false;
-
+    $scope.cargando=true;
 
     $scope.propertyName = 'id';
     $scope.reverse = true;
@@ -17,21 +17,14 @@ GSPEMApp.controller('abmReports', function($scope,$http,$uibModal,toastr,MovPend
     var getStock = function() {
         $http.get(Routing.generate('get_stock')
         ).success(function (stock) {
+            $scope.cargando=false;
             $scope.stock=stock;
             //console.log($scope.stock);
         });
     };
     getStock();
 
-    var getUsers= function () {
-        $http.get(Routing.generate('get_users')
-        ).success(function (data) {
-            $scope.tecnicos=data;
-            $scope.tecnicotarea=$scope.tecnicos[0];
-            getStockFromUser();
-        });
-    }
-    getUsers();
+
 
 
     var getSitios = function() {
@@ -48,32 +41,7 @@ GSPEMApp.controller('abmReports', function($scope,$http,$uibModal,toastr,MovPend
         getStockFromUser();
     };
 
-    $scope.updateReportSitios=function () {
-        getStockFromSite();
-    };
-    var getStockFromUser=function () {
 
-        $http({
-            url: Routing.generate('get_stock_user_custom'),
-            method: "POST",
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            data: {
-                id:  $scope.tecnicotarea.id
-            },
-            transformRequest: function (obj) {
-                var str = [];
-                for (var p in obj)
-                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                return str.join("&");
-            }
-        }).then(function (response) {
-            console.log(response);
-                $scope.stock_tec=response.data;
-            },
-            function (response) { // optional
-                // failed
-            });
-    }
 
     var getStockFromSite=function () {
 
@@ -101,20 +69,29 @@ GSPEMApp.controller('abmReports', function($scope,$http,$uibModal,toastr,MovPend
 
     $scope.confirmar=function () {
 
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if(dd<10) {
+            dd='0'+dd
+        }
+
+        if(mm<10) {
+            mm='0'+mm
+        }
+
+        today = mm+'/'+dd+'/'+yyyy;
+
         var blob = new Blob([document.getElementById('exportable').innerHTML], {
             type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
         });
-        saveAs(blob, "ReportMaestro.xls");
+        saveAs(blob, "Reporte_Maestro_"+today+".xls");
     };
 
 
-    $scope.exportarStockUser=function () {
 
-        var blob = new Blob([document.getElementById('exportable').innerHTML], {
-            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
-        });
-        saveAs(blob, "Reporte_"+$scope.tecnicotarea.name+".xls");
-    };
 
     $scope.exportarStockSitio=function () {
 
@@ -124,10 +101,95 @@ GSPEMApp.controller('abmReports', function($scope,$http,$uibModal,toastr,MovPend
         saveAs(blob, "Reporte_"+$scope.sitioselected.name+".xls");
     };
 });
+
+
+GSPEMApp.controller('reportStockAllUsers', function($scope,$http,$uibModal,toastr,MovPend) {
+    $scope.cargando=true;
+    $scope.usersmultiselect=[];
+    $scope.updateReportSitios=function () {
+        console.log($scope.usersselected);
+        if($scope.usersselected[0]=="0"){
+            getStockFromAllUsers();
+        }else {
+            $scope.newstock=[];
+            for (var a = 0; a < $scope.stockfilter.length; a++) {
+                for (var i = 0; i < $scope.usersselected.length; i++) {
+                    if( parseInt($scope.stockfilter[a].tecid)== parseInt($scope.usersselected[i])){
+                        // esta seleccionado
+                        $scope.newstock.push($scope.stockfilter[a]);
+                    }
+                }
+
+            }
+        }
+
+        $scope.stock=$scope.newstock;
+        //getStockFromSite();
+    };
+
+    var getUsers= function () {
+        $http.get(Routing.generate('get_users')
+        ).success(function (data) {
+
+            $scope.tecnicos=data;
+            console.log($scope.tecnicos);
+            $scope.usersmultiselect.push({id:0 ,label:"Todos"});
+            for (var a = 0; a < $scope.tecnicos.length; a++) {
+                $scope.usersmultiselect.push({id:$scope.tecnicos[a].id,label:$scope.tecnicos[a].name + ' '+ $scope.tecnicos[a].lastName});
+            }
+            $scope.tecnicotarea=$scope.tecnicos[0];
+            //getStockFromUser();
+        });
+    }
+    getUsers();
+
+
+    var getStockFromAllUsers = function() {
+        $http.get(Routing.generate('get_stock_users')
+        ).success(function (stock) {
+            $scope.stock=stock;
+            $scope.stockfilter=$scope.stock;
+            $scope.cargando=false;
+        });
+    };
+    getStockFromAllUsers();
+
+
+    $scope.sortBy = function(propertyName) {
+        $scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
+        $scope.propertyName = propertyName;
+    };
+
+    $scope.exportar=function () {
+
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if(dd<10) {
+            dd='0'+dd
+        }
+
+        if(mm<10) {
+            mm='0'+mm
+        }
+
+        today = mm+'/'+dd+'/'+yyyy;
+        var blob = new Blob([document.getElementById('exportable').innerHTML], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+        });
+        saveAs(blob, "Reporte_Stock_Tecnicos"+today+".xls");
+    };
+
+});
+
+
+
 GSPEMApp.controller('abmReportsContratista', function($scope,$http,$uibModal,toastr,MovPend) {
     $scope.animationsEnabled = false;
     $scope.contratistaselected;
-
+    $scope.cargando=true;
     $scope.propertyName = 'id';
     $scope.reverse = true;
     $scope.sortBy = function(propertyName) {
@@ -137,10 +199,24 @@ GSPEMApp.controller('abmReportsContratista', function($scope,$http,$uibModal,toa
 
     $scope.exportar=function () {
 
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if(dd<10) {
+            dd='0'+dd
+        }
+
+        if(mm<10) {
+            mm='0'+mm
+        }
+
+        today = mm+'/'+dd+'/'+yyyy;
         var blob = new Blob([document.getElementById('exportable').innerHTML], {
             type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
         });
-        saveAs(blob, "Reporte_Stock_Contratistas.xls");
+        saveAs(blob, "Reporte_Stock_Contratistas_"+today+".xls");
     };
 
     var getData = function() {
@@ -174,6 +250,7 @@ GSPEMApp.controller('abmReportsContratista', function($scope,$http,$uibModal,toa
                 return str.join("&");
             }
         }).then(function (response) {
+                $scope.cargando=false;
                 console.log(response);
                 $scope.stock=response.data;
             },
@@ -184,16 +261,32 @@ GSPEMApp.controller('abmReportsContratista', function($scope,$http,$uibModal,toa
 
 
 });
-GSPEMApp.controller('abmReportsMov', function($scope,$http,$uibModal,toastr,MovPend) {
+GSPEMApp.controller('abmReportsMov', function($filter,$scope,$http,$uibModal,toastr,MovPend) {
     $scope.animationsEnabled = false;
     $scope.contratistaselected;
 
+    
+    
     $scope.exportar=function () {
 
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if(dd<10) {
+            dd='0'+dd
+        }
+
+        if(mm<10) {
+            mm='0'+mm
+        }
+
+        today = mm+'/'+dd+'/'+yyyy;
         var blob = new Blob([document.getElementById('exportable').innerHTML], {
             type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
         });
-        saveAs(blob, "Reporte_Movimientos.xls");
+        saveAs(blob, "Reporte_Movimientos_"+today+".xls");
     };
     
     $scope.propertyName = 'id';
@@ -202,13 +295,13 @@ GSPEMApp.controller('abmReportsMov', function($scope,$http,$uibModal,toastr,MovP
         $scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
         $scope.propertyName = propertyName;
     };
-
+    $scope.cargando=true;
 
     var getData = function() {
         $http.get(Routing.generate('get_report_movs')
         ).success(function (movs) {
             $scope.movs=movs;
-            
+            $scope.cargando=false;
         });
     };
     getData();
@@ -273,4 +366,59 @@ GSPEMApp.controller('ModalNotaMov', function($filter,$scope,$http, $uibModalInst
         $uibModalInstance.dismiss('cancel');
     };
 
+});
+
+GSPEMApp.controller('abmReportsAlertas', function($filter,$scope,$http,$uibModal,toastr,MovPend) {
+
+
+    $scope.propertyName = 'name';
+    $scope.reverse = true;
+    $scope.sortBy = function(propertyName) {
+        $scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
+        $scope.propertyName = propertyName;
+    };
+
+    $scope.animationsEnabled = false;
+    $scope.contratistaselected;
+    $scope.parseInt = parseInt;
+    $scope.showperfiledit = false;
+    $scope.cargando = true;
+    var getStock = function () {
+        $http.get(Routing.generate('get_stock')
+        ).success(function (stock) {
+            $scope.cargando = false;
+            $scope.stock = [];
+            $scope.stock_temp = stock;
+            for (var a = 0; a < $scope.stock_temp.length; a++) {
+                if (parseInt($scope.stock_temp[a].stock) < parseInt($scope.stock_temp[a].umbralmin)) {
+                    $scope.stock.push($scope.stock_temp[a]);
+                }
+            }
+            //console.log($scope.stock);
+        });
+    };
+    getStock();
+
+
+    $scope.exportar=function () {
+
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if(dd<10) {
+            dd='0'+dd
+        }
+
+        if(mm<10) {
+            mm='0'+mm
+        }
+
+        today = mm+'/'+dd+'/'+yyyy;
+        var blob = new Blob([document.getElementById('exportable').innerHTML], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+        });
+        saveAs(blob, "Reporte_Alertados_"+today+".xls");
+    };
 });
