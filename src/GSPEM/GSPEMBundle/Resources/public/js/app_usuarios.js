@@ -151,7 +151,8 @@ GSPEMApp.controller('ModalNewUserCtrl', function($filter,$scope,$http, $uibModal
         }
     }
 
-    if(item!=null){
+    if(item.id!=null){
+        console.log("edit");
         $scope.profileselected=$filter('filter')($scope.perfiles,{"id":item.profileid})[0];
         console.log(item.contratistaid);
         if(item.contratistaid==0){
@@ -173,6 +174,7 @@ GSPEMApp.controller('ModalNewUserCtrl', function($filter,$scope,$http, $uibModal
         $scope.phone=item.phone;
         $scope.mail=item.mail;
     }else {
+        console.log("new");
         $scope.nombre="";
         $scope.descript="";
         $scope.id=0;
@@ -191,7 +193,6 @@ GSPEMApp.controller('ModalNewUserCtrl', function($filter,$scope,$http, $uibModal
     };
 
     $scope.saveUser= function () {
-
 
         if ($scope.nombre.length == 0 || $scope.user.length == 0  || $scope.mail.length == 0 ) {
             toastr.warning('Complete todos los campos requeridos (*)', 'Atención');
@@ -230,7 +231,6 @@ GSPEMApp.controller('ModalNewUserCtrl', function($filter,$scope,$http, $uibModal
                 nombre: $scope.nombre,
                 apellido: $scope.apellido,
                 id:$scope.id,
-
                 username:$scope.user,
                 password:$scope.pass,
                 phone:$scope.phone,
@@ -245,7 +245,7 @@ GSPEMApp.controller('ModalNewUserCtrl', function($filter,$scope,$http, $uibModal
                 return str.join("&");
             }
         }).then(function (response) {
-                console.log(response);
+                //console.log(response);
                 $uibModalInstance.dismiss('cancel');
             },
             function (response) { // optional
