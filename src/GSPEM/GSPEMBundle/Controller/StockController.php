@@ -110,6 +110,25 @@ class StockController extends Controller
     }
 
 
+    public function getAllStockContratistasAction(){
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $stmt = $em->getConnection()->createQueryBuilder()
+            ->select("c.id as contratistaid , c.name as contratista , m.id as id ,u.first_name as nametec , u.last_name as apetec  ,m.referencia as referencia , m.id_custom as idCustom , m.descript as descript ,s.cant  as stock , m.name as name")
+            ->from("materiales", "m")
+            ->innerJoin("m", "stock_tecnico", "s", "m.id = s.material")
+            ->innerJoin("s", "users", "u", "s.tecnico = u.id")
+            ->innerJoin("u", "contratistas", "c", "u.contratista = c.id")
+            ->orderBy('u.id', 'ASC')
+            ->execute();
+        $encoders = array(new XmlEncoder(), new JsonEncoder());
+        $normalizers = array(new ObjectNormalizer());
+
+        $serializer = new Serializer($normalizers, $encoders);
+        return new Response($serializer->serialize($stmt->fetchAll(),"json"),200,array('Content-Type'=>'application/json'));
+    }
+
+
     public function getMaterialesStockBySiteCustomAction(\Symfony\Component\HttpFoundation\Request $request){
         $em = $this->getDoctrine()->getEntityManager();
         $user=$this->get('security.token_storage')->getToken()->getUser();
