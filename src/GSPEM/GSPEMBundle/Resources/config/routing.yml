@@ -119,6 +119,13 @@ get_stock_users:
         expose: true
     defaults: { _controller: GSPEMGSPEMBundle:Stock:getMaterialesStockFromTecnicos}
 
+get_stock_contratistas:
+    path:     /get_all_stock_contratistas
+    options:
+        expose: true
+    defaults: { _controller: GSPEMGSPEMBundle:Stock:getAllStockContratistas}
+
+
 
 
 get_stock_sitio_custom:

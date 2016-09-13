@@ -7,13 +7,13 @@
                     <span class="sr-only">Loading...</span></h2>
                 <div class="clearfix">
                     <div class="form-group has-success has-feedback">
-                        <select  class="form-control" name="typematerial" id="mySelect"
+                        <!--<select  class="form-control" name="typematerial" id="mySelect"
                                  ng-options="contratista.name for contratista in contratistas track by contratista.id"
                                  ng-model="contratistaselected" ng-change="updateReportContratista()"></select>
-
-                        <!--<select  ng-change="updateReportContratista()" class="form-control"  name="ngvalueselect" ng-model="contratistaselected" multiple>
+-->
+                        <select  ng-change="updateReportContratista()" class="form-control"  name="ngvalueselect" ng-model="contratistaselected" multiple>
                             <option ng-repeat="contratista in contratistas" ng-value="contratista.id">{{contratista.name}}</option>
-                        </select>-->
+                        </select>
 
                     </div>
                 </div>
@@ -26,8 +26,10 @@
                         <th>#</th>
                         <th><a ng-click="sortBy('idCustom')">ID <i class="fa fa-sort" aria-hidden="true"></i> </a></th>
                         <th><a ng-click="sortBy('name')"> Nombre <i class="fa fa-sort" aria-hidden="true"></i> </a></th>
+
                         <th><a ng-click="sortBy('descript')"> Descripción <i class="fa fa-sort" aria-hidden="true"></i> </a></th>
-                        <th><a ng-click="sortBy('nametec')"> Técnico <i class="fa fa-sort" aria-hidden="true"></i> </a></th>
+                        <th><a ng-click="sortBy('contratista')"> Contratista <i class="fa fa-sort" aria-hidden="true"></i> </a></th>
+
                         <th><a ng-click="sortBy('stock')"> Stock Actual <i class="fa fa-sort" aria-hidden="true"></i> </a></th>
 
 
@@ -39,7 +41,7 @@
                         <td>{{ item.idCustom }}</td>
                         <td>{{ item.name }}</td>
                         <td>{{ item.descript }}</td>
-                        <td>{{ item.nametec }} {{ item.apetec }}</td>
+                        <td>{{ item.contratista }} </td>
 
                         <td style="text-align: right">{{ item.stock }}</td>
 

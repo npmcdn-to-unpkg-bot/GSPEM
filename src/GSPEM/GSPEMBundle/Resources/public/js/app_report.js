@@ -202,6 +202,29 @@ GSPEMApp.controller('abmReportsContratista', function($scope,$http,$uibModal,toa
     $scope.cargando=true;
     $scope.propertyName = 'id';
     $scope.reverse = true;
+
+    $scope.usersmultiselect=[];
+    $scope.updateReportContratista=function () {
+
+        if($scope.contratistaselected[0]=="0"){
+            getStockFromAllContratistas();
+        }else {
+            $scope.newstock=[];
+            for (var a = 0; a < $scope.stockfilter.length; a++) {
+                for (var i = 0; i < $scope.contratistaselected.length; i++) {
+                    if( parseInt($scope.stockfilter[a].contratistaid)== parseInt($scope.contratistaselected[i])){
+                        $scope.newstock.push($scope.stockfilter[a]);
+                    }
+                }
+
+            }
+        }
+
+        $scope.stock=$scope.newstock;
+        //getStockFromSite();
+    };
+
+
     $scope.sortBy = function(propertyName) {
         $scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
         $scope.propertyName = propertyName;
@@ -235,40 +258,20 @@ GSPEMApp.controller('abmReportsContratista', function($scope,$http,$uibModal,toa
 
             $scope.contratistas=contratistas;
             $scope.contratistaselected=$scope.contratistas[0];
-            getStockFromContratista();
+            getStockFromAllContratistas();
         });
     };
     getData();
 
-    $scope.updateReportContratista=function () {
-        console.log($scope.contratistaselected);
-        getStockFromContratista();
+    var getStockFromAllContratistas = function() {
+        $http.get(Routing.generate('get_stock_contratistas')
+        ).success(function (stock) {
+            $scope.stock=stock;
+            $scope.stockfilter=$scope.stock;
+            $scope.cargando=false;
+        });
     };
-
-    var getStockFromContratista=function () {
-        console.log($scope.contratistaselected.id);
-        $http({
-            url: Routing.generate('get_stock_contratista'),
-            method: "POST",
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            data: {
-                id:   $scope.contratistaselected.id
-            },
-            transformRequest: function (obj) {
-                var str = [];
-                for (var p in obj)
-                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                return str.join("&");
-            }
-        }).then(function (response) {
-                $scope.cargando=false;
-                //console.log(response);
-                $scope.stock=response.data;
-            },
-            function (response) { // optional
-                // failed
-            });
-    }
+    getStockFromAllContratistas();
 
 
 });
