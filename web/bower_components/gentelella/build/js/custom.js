@@ -37,9 +37,7 @@ $(document).ready(function() {
 
 
         $( "li" ).each(function( index ) {
-                console.log($( this ).text());
                 var h = $("a",this).attr('href');
-                console.log(h);
                 if(h != undefined){
                     $( this ).removeClass('active active-sm');
                 }
