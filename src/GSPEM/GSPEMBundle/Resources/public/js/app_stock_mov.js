@@ -10,6 +10,15 @@ GSPEMApp.controller('abmStockMov', function($scope,$http,$uibModal,toastr ,MovPe
         $http.get(Routing.generate('get_users')
         ).success(function (data) {
             $scope.tecnicos=data;
+
+            for (var a = 0; a < $scope.tecnicos.length; a++) {
+                if ($scope.tecnicos[a].contratista!=null){
+                    $scope.tecnicos[a].name=$scope.tecnicos[a].name+" "+$scope.tecnicos[a].lastName +" - "+$scope.tecnicos[a].contratista;
+                }else {
+                    $scope.tecnicos[a].name=$scope.tecnicos[a].name+" "+$scope.tecnicos[a].lastName;
+                }
+            }
+
             $scope.tecnicotarea=$scope.tecnicos[0];
         });
     }
@@ -154,6 +163,14 @@ GSPEMApp.controller('abmStockMovTecnicoToTecnico', function($scope,$http,$uibMod
         $http.get(Routing.generate('get_users')
         ).success(function (data) {
             $scope.tecnicos=data;
+            for (var a = 0; a < $scope.tecnicos.length; a++) {
+                if ($scope.tecnicos[a].contratista!=null){
+                    $scope.tecnicos[a].name=$scope.tecnicos[a].name+" "+$scope.tecnicos[a].lastName +" - "+$scope.tecnicos[a].contratista;
+                }else {
+                    $scope.tecnicos[a].name=$scope.tecnicos[a].name+" "+$scope.tecnicos[a].lastName;
+                }
+            }
+
             $scope.tecnicoorigen=$scope.tecnicos[0];
             $scope.tecnicodestino=$scope.tecnicos[0];
             getStockFromUser();
@@ -326,6 +343,14 @@ GSPEMApp.controller('abmStockMovTecnicoToTecnicoFromTec', function($scope,$http,
         $http.get(Routing.generate('get_users')
         ).success(function (data) {
             $scope.tecnicos=data;
+            for (var a = 0; a < $scope.tecnicos.length; a++) {
+                if ($scope.tecnicos[a].contratista!=null){
+                    $scope.tecnicos[a].name=$scope.tecnicos[a].name+" "+$scope.tecnicos[a].lastName +" - "+$scope.tecnicos[a].contratista;
+                }else {
+                    $scope.tecnicos[a].name=$scope.tecnicos[a].name+" "+$scope.tecnicos[a].lastName;
+                }
+            }
+
             $scope.tecnicodestino=$scope.tecnicos[0];
         });
     }
