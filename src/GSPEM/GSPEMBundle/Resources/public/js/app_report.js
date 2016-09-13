@@ -35,7 +35,18 @@ GSPEMApp.controller('abmReports', function($scope,$http,$uibModal,toastr,MovPend
             getStockFromSite();
         });
     };
+
+
+
+
+    $scope.updateReportSitios=function () {
+        getStockFromSite();
+    };
+
+
     getSitios();
+
+
 
     $scope.updateReportUsers=function () {
         getStockFromUser();
@@ -44,7 +55,7 @@ GSPEMApp.controller('abmReports', function($scope,$http,$uibModal,toastr,MovPend
 
 
     var getStockFromSite=function () {
-
+        console.log($scope.sitioselected.id);
         $http({
             url: Routing.generate('get_stock_sitio_custom'),
             method: "POST",
@@ -106,7 +117,7 @@ GSPEMApp.controller('abmReports', function($scope,$http,$uibModal,toastr,MovPend
 GSPEMApp.controller('reportStockAllUsers', function($scope,$http,$uibModal,toastr,MovPend) {
     $scope.cargando=true;
     $scope.usersmultiselect=[];
-    $scope.updateReportSitios=function () {
+    $scope.updateReportStockTecnico=function () {
         console.log($scope.usersselected);
         if($scope.usersselected[0]=="0"){
             getStockFromAllUsers();
@@ -188,7 +199,6 @@ GSPEMApp.controller('reportStockAllUsers', function($scope,$http,$uibModal,toast
 
 GSPEMApp.controller('abmReportsContratista', function($scope,$http,$uibModal,toastr,MovPend) {
     $scope.animationsEnabled = false;
-    $scope.contratistaselected;
     $scope.cargando=true;
     $scope.propertyName = 'id';
     $scope.reverse = true;
@@ -231,11 +241,12 @@ GSPEMApp.controller('abmReportsContratista', function($scope,$http,$uibModal,toa
     getData();
 
     $scope.updateReportContratista=function () {
+        console.log($scope.contratistaselected);
         getStockFromContratista();
     };
 
     var getStockFromContratista=function () {
-
+        console.log($scope.contratistaselected.id);
         $http({
             url: Routing.generate('get_stock_contratista'),
             method: "POST",
@@ -251,7 +262,7 @@ GSPEMApp.controller('abmReportsContratista', function($scope,$http,$uibModal,toa
             }
         }).then(function (response) {
                 $scope.cargando=false;
-                console.log(response);
+                //console.log(response);
                 $scope.stock=response.data;
             },
             function (response) { // optional

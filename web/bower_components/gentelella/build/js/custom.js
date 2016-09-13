@@ -35,12 +35,27 @@ $(document).ready(function() {
     $SIDEBAR_MENU.find('a').on('click', function(ev) {
         var $li = $(this).parent();
 
+
+        $( "li" ).each(function( index ) {
+                console.log($( this ).text());
+                var h = $("a",this).attr('href');
+                console.log(h);
+                if(h != undefined){
+                    $( this ).removeClass('active active-sm');
+                }
+
+        });
+
+        //console.log($li);
         if ($li.is('.active')) {
+            //console.log("activo");
             $li.removeClass('active active-sm');
             $('ul:first', $li).slideUp(function() {
                 setContentHeight();
             });
         } else {
+            
+            //console.log("nop");
             // prevent closing menu if we are on child menu
             if (!$li.parent().is('.child_menu')) {
                 $SIDEBAR_MENU.find('li').removeClass('active active-sm');

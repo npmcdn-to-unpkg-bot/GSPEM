@@ -160,8 +160,9 @@ GSPEMApp.controller('ModelNewMaterialCtrl', function($filter,$scope,$http, $uibM
         $scope.id=item.id;
         $scope.id_custom=item.idCustom
         $scope.name=item.name;
-        $scope.umbralmin=parseInt(item.umbralmin);
-        $scope.umbralmax=parseInt(item.umbralmax);
+        if (parseInt(item.umbralmin)>=0){
+            $scope.umbralmin=parseInt(item.umbralmin);
+        }
 
         $scope.ubicacion=item.ubicacion;
         $scope.origen=item.origen;
@@ -185,7 +186,12 @@ GSPEMApp.controller('ModelNewMaterialCtrl', function($filter,$scope,$http, $uibM
             $scope.referencia.ref2=color;
         }
         console.log($scope.referencia);
-    } ;
+    };
+
+    $scope.clearRef=function () {
+        $scope.referencia={ref1:"",ref2:""};
+    }
+
 
     $scope.cerrar=function () {
         $uibModalInstance.dismiss('cancel');
@@ -195,6 +201,11 @@ GSPEMApp.controller('ModelNewMaterialCtrl', function($filter,$scope,$http, $uibM
         console.log($scope.typematerial);
 
 
+        if(!parseInt($scope.umbralmin))
+        {
+            $scope.umbralmin=0;
+        }
+        
         if ($scope.name.length == 0 || $scope.descript.length == 0 || $scope.id_custom.length == 0 ) {
             toastr.warning('Complete todos los campos requeridos (*)', 'Atención');
         } else {
@@ -206,7 +217,7 @@ GSPEMApp.controller('ModelNewMaterialCtrl', function($filter,$scope,$http, $uibM
                     name: $scope.name,
                     descript: $scope.descript,
                     id: $scope.id,
-                    umbralmin:$scope.umbralmin,
+                    umbralmin:parseInt($scope.umbralmin),
                     umbralmax:$scope.umbralmax,
                     referencia:angular.toJson($scope.referencia, 2),
                     origen:$scope.origen,

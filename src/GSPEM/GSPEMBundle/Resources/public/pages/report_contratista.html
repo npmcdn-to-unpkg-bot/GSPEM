@@ -8,8 +8,13 @@
                 <div class="clearfix">
                     <div class="form-group has-success has-feedback">
                         <select  class="form-control" name="typematerial" id="mySelect"
-                                 ng-options="contratista.name for contratista in contratistas track by tecnico.id"
+                                 ng-options="contratista.name for contratista in contratistas track by contratista.id"
                                  ng-model="contratistaselected" ng-change="updateReportContratista()"></select>
+
+                        <!--<select  ng-change="updateReportContratista()" class="form-control"  name="ngvalueselect" ng-model="contratistaselected" multiple>
+                            <option ng-repeat="contratista in contratistas" ng-value="contratista.id">{{contratista.name}}</option>
+                        </select>-->
+
                     </div>
                 </div>
             </div>
