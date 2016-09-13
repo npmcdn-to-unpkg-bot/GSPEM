@@ -329,7 +329,7 @@ body {
   color: #73879C;
   background: #2A3F54;
   font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 400;
   line-height: 1.471; }
 
@@ -568,7 +568,7 @@ a:hover, a:focus {
   text-overflow: ellipsis;
   overflow: hidden;
   font-weight: 400;
-  font-size: 22px;
+  font-size: 20px;
   width: 100%;
   color: #ECF0F1 !important;
   margin-left: 0 !important;
@@ -631,7 +631,7 @@ a:hover, a:focus {
 
 .nav.child_menu > li > a {
   color: rgba(255, 255, 255, 0.75);
-  font-size: 12px;
+  font-size: 11px;
   padding: 9px; }
 
 .panel_toolbox {
@@ -755,7 +755,7 @@ article.media {
   float: left; }
 
 h2 {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 400; }
 
 #left, #right {
