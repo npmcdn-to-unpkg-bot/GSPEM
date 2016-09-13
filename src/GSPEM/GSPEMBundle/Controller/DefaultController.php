@@ -439,7 +439,6 @@ class DefaultController extends Controller
         }
         $em->flush();
 
-        //falta ver lo de las mesas
 
         $encoders = array(new XmlEncoder(), new JsonEncoder());
         $normalizers = array(new ObjectNormalizer());
