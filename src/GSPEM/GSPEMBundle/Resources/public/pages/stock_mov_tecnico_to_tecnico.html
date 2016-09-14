@@ -1,7 +1,7 @@
 <div class="row">
 
 
-    <div class="col-md-6 col-sm-6 col-xs-12">
+    <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
                 <div class="row">
@@ -24,7 +24,7 @@
                 </div>
 
             </div>
-            <div class="x_content" style="height:  70% ;overflow: auto">
+            <div class="x_content" style="height:  300px ;overflow: auto">
                 <table class="table table-bordered">
                     <thead>
                     <tr>
@@ -51,13 +51,13 @@
                             <input class="input-group-sm" ng-model="item.cant" type="number" style="width: 60px;height: 22px;text-align: right" placeholder="1" />
                         </td>
                         <td ng-if="!item.new_stock" >
-                            <a  ng-if="item.stock>0" class="btn btn-sm btn-success " ng-click="setStock(item)" ><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+                            <a  ng-if="item.stock>0" class="btn btn-sm btn-success " ng-click="setStock(item)" ><i class="fa fa-long-arrow-down" aria-hidden="true"></i></a>
                             <a  ng-if="item.showcancel"  class="btn btn-sm btn-warning " ng-click="cancelStock(item)" ><i class="fa fa-ban" aria-hidden="true"></i>
                             </a>
 
                         </td>
                         <td ng-if="item.new_stock" >
-                            <a  ng-if="item.stock>0"  class="btn btn-sm btn-warning " ng-click="setStock(item)" ><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+                            <a  ng-if="item.stock>0"  class="btn btn-sm btn-warning " ng-click="setStock(item)" ><i class="fa fa-long-arrow-down" aria-hidden="true"></i></a>
                             <a  class="btn btn-sm btn-warning " ng-click="cancelStock(item)" ><i class="fa fa-ban" aria-hidden="true"></i>
                             </a>
                         </td>
@@ -72,7 +72,7 @@
         </div>
 
     </div>
-    <div class="col-md-6 col-sm-6 col-xs-12">
+    <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
                 <div class="row">
@@ -93,7 +93,7 @@
                     </div>
                 </div>
             </div>
-            <div class="x_content" style="height:  59% ;overflow: auto">
+            <div class="x_content" style="height:  300px% ;overflow: auto">
                 <table class="table table-bordered">
                     <thead>
                     <tr>
@@ -108,9 +108,7 @@
                         <th>{{ $index +1 }}</th>
                         <td>{{ item.id }}</td>
                         <td>{{ item.name | limitTo:8 }}</td>
-                        <td style="text-align: right">
-                            <a  class="btn btn-sm btn-success " style="visibility: hidden" ng-click="setStock(item)" ><i class="fa fa-long-arrow-left" aria-hidden="true"></i>
-                            </a>{{ item.stock }}
+                        <td style="text-align: right">{{ item.stock }}
                         </td>
                     </tr>
                     </tbody>

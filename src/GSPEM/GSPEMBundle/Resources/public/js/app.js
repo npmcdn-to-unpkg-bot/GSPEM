@@ -124,7 +124,7 @@ GSPEMApp.config(function($routeProvider,toastrConfig) {
         })
         .when('/stock_report_sit', {
             templateUrl : '../bundles/gspemgspem/pages/report_sitio.html',
-            controller  : 'abmReports'
+            controller  : 'reportsSitios'
         })
         .when('/stock_contratista', {
             templateUrl : '../bundles/gspemgspem/pages/report_contratista.html',

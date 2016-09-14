@@ -125,6 +125,11 @@ get_stock_contratistas:
         expose: true
     defaults: { _controller: GSPEMGSPEMBundle:Stock:getAllStockContratistas}
 
+get_stock_sitios:
+    path:     /get_all_stock_sitios
+    options:
+        expose: true
+    defaults: { _controller: GSPEMGSPEMBundle:Stock:getAllStockSiteCustom}
 
 
 
