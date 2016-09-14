@@ -146,6 +146,23 @@ class StockController extends Controller
         return new Response($serializer->serialize($stmt->fetchAll(),"json"),200,array('Content-Type'=>'application/json'));
     }
 
+    public function getAllStockSiteCustomAction(\Symfony\Component\HttpFoundation\Request $request){
+        $em = $this->getDoctrine()->getEntityManager();
+        $user=$this->get('security.token_storage')->getToken()->getUser();
+        $stmt = $em->getConnection()->createQueryBuilder()
+            ->select("m.id as id ,s.sitio as sitioid , sit.name as namesit , m.referencia as referencia , m.id_custom as idCustom , m.descript as descript ,s.cant  as stock , m.name as name")
+            ->from("materiales", "m")
+            ->innerJoin("m", "stock_sitio", "s", "m.id = s.material")
+            ->leftJoin("s", "sitios", "sit", "s.sitio = sit.id")
+            ->orderBy('m.name', 'ASC')
+            ->execute();
+        $encoders = array(new XmlEncoder(), new JsonEncoder());
+        $normalizers = array(new ObjectNormalizer());
+
+        $serializer = new Serializer($normalizers, $encoders);
+        return new Response($serializer->serialize($stmt->fetchAll(),"json"),200,array('Content-Type'=>'application/json'));
+    }
+
 
     public function setStockAction(\Symfony\Component\HttpFoundation\Request $request){
         $em = $this->getDoctrine()->getEntityManager();

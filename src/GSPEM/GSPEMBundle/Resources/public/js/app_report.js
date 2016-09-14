@@ -436,3 +436,83 @@ GSPEMApp.controller('abmReportsAlertas', function($filter,$scope,$http,$uibModal
         saveAs(blob, "Reporte_Alertados_"+today+".xls");
     };
 });
+
+GSPEMApp.controller('reportsSitios', function($filter,$scope,$http,$uibModal,toastr,MovPend) {
+
+
+    $scope.propertyName = 'name';
+    $scope.reverse = true;
+    $scope.sortBy = function(propertyName) {
+        $scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
+        $scope.propertyName = propertyName;
+    };
+    
+
+    var getSitios = function() {
+        $http.get(Routing.generate('get_sitios')
+        ).success(function (sitios) {
+            $scope.sitios=sitios;
+            $scope.sitioselected=$scope.sitios[0];
+            getStockFromSite();
+        });
+    };
+
+
+
+    $scope.updateReportSitios=function () {
+
+        if($scope.sitioselected[0]=="0"){
+            getStockFromSite();
+        }else {
+            $scope.newstock=[];
+            for (var a = 0; a < $scope.stockfilter.length; a++) {
+                for (var i = 0; i < $scope.sitioselected.length; i++) {
+                    if( parseInt($scope.stockfilter[a].sitioid)== parseInt($scope.sitioselected[i])){
+                        $scope.newstock.push($scope.stockfilter[a]);
+                    }
+                }
+
+            }
+        }
+
+        $scope.stock=$scope.newstock;
+        //getStockFromSite();
+    };
+
+    getSitios();
+
+
+
+    var getStockFromSite = function() {
+        $http.get(Routing.generate('get_stock_sitios')
+        ).success(function (stock) {
+            $scope.stock=stock;
+            $scope.stockfilter=$scope.stock;
+            $scope.cargando=false;
+        });
+    };
+    getStockFromSite();
+
+    $scope.exportar=function () {
+
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if(dd<10) {
+            dd='0'+dd
+        }
+
+        if(mm<10) {
+            mm='0'+mm
+        }
+
+        today = mm+'/'+dd+'/'+yyyy;
+        var blob = new Blob([document.getElementById('exportable').innerHTML], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+        });
+        saveAs(blob, "Reporte_Sitios_"+today+".xls");
+    };
+
+});
